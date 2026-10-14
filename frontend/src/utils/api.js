@@ -1,8 +1,19 @@
 /**
- * Async API fetch client with timeout, structured error parsing and offline resilience.
+ * Universal API Client with Automatic Offline Client-Side Engine Fallback
+ * Works both when connected to the Python Flask backend and 100% offline on mobile devices (APK / PWA).
  */
 
-export const postApi = async (url, payload = {}, timeoutMs = 12000) => {
+import {
+  evaluateExpressionClient,
+  evaluateCalculusClient,
+  evaluateAlgebraClient,
+  evaluateMatrixClient,
+  evaluateComplexClient,
+  evaluatePlotClient,
+  evaluateExtrasClient
+} from './clientMathEngine';
+
+export const postApi = async (url, payload = {}, timeoutMs = 8000) => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -23,11 +34,8 @@ export const postApi = async (url, payload = {}, timeoutMs = 12000) => {
     try {
       data = await response.json();
     } catch (e) {
-      throw {
-        code: 'PARSE_ERROR',
-        message: 'Could not parse response from mathematical engine.',
-        hint: 'Please check your inputs and try again.'
-      };
+      // If server returns malformed response, fall back to client engine
+      return fallbackToClientEngine(url, payload);
     }
 
     if (!response.ok || (data && data.success === false)) {
@@ -44,23 +52,52 @@ export const postApi = async (url, payload = {}, timeoutMs = 12000) => {
   } catch (err) {
     clearTimeout(timeoutId);
 
-    if (err.name === 'AbortError') {
-      throw {
-        code: 'TIMEOUT_ERROR',
-        message: 'The computation exceeded the maximum time limit (12s).',
-        hint: 'SymPy took too long. Try a simpler expression or reduce series order.'
-      };
-    }
-
-    // Network / Backend Unreachable
-    if (err instanceof TypeError && err.message.toLowerCase().includes('fetch')) {
-      throw {
-        code: 'NETWORK_FAILURE',
-        message: 'Cannot connect to the Flask/SymPy backend service.',
-        hint: 'Ensure Python Flask is running (python run.py) on http://127.0.0.1:5000.'
-      };
+    // If aborted due to timeout or network failure (e.g. phone running without server), fall back to client engine
+    if (
+      err.name === 'AbortError' || 
+      (err instanceof TypeError && err.message.toLowerCase().includes('fetch')) ||
+      err.message?.includes('Failed to fetch')
+    ) {
+      return fallbackToClientEngine(url, payload);
     }
 
     throw err;
   }
 };
+
+/**
+ * Executes calculation using the built-in Client-Side Engine
+ */
+function fallbackToClientEngine(url, payload) {
+  try {
+    if (url.includes('/api/calculate')) {
+      return evaluateExpressionClient(payload.expression, payload.angle_mode || 'rad');
+    }
+    if (url.includes('/api/calculus')) {
+      return evaluateCalculusClient(url, payload);
+    }
+    if (url.includes('/api/algebra')) {
+      return evaluateAlgebraClient(url, payload);
+    }
+    if (url.includes('/api/matrix')) {
+      return evaluateMatrixClient(url, payload);
+    }
+    if (url.includes('/api/complex')) {
+      return evaluateComplexClient(payload);
+    }
+    if (url.includes('/api/plot')) {
+      return evaluatePlotClient(payload);
+    }
+    if (url.includes('/api/extras')) {
+      return evaluateExtrasClient(url, payload);
+    }
+  } catch (clientErr) {
+    throw clientErr;
+  }
+
+  throw {
+    code: 'OFFLINE_UNSUPPORTED',
+    message: 'Operation requires active computational connection.',
+    hint: 'Please check expression format.'
+  };
+}

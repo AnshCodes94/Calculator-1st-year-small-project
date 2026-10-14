@@ -10,7 +10,7 @@ class Config:
     """Base application configuration."""
     SECRET_KEY = os.environ.get('SECRET_KEY', 'default-dev-secret-key-3918237')
     DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() in ('true', '1', 't')
-    HOST = os.environ.get('HOST', '127.0.0.1')
+    HOST = os.environ.get('HOST', '0.0.0.0')
     PORT = int(os.environ.get('PORT', 5000))
 
     # Security & Execution limits

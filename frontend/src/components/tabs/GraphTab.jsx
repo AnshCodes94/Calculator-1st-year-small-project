@@ -169,6 +169,30 @@ export const GraphTab = () => {
             <GraphIcon size={16} />
             <span>{loading ? 'Plotting Curves...' : 'Plot Interactive Curves'}</span>
           </button>
+
+          {/* Download as PNG Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (window.Plotly && chartContainerRef.current) {
+                window.Plotly.downloadImage(chartContainerRef.current, {
+                  format: 'png',
+                  width: 1200,
+                  height: 800,
+                  filename: `calcverse-plot-${Date.now()}`
+                });
+              }
+            }}
+            className="px-3.5 py-2.5 rounded-lg bg-theme-elevated hover:bg-theme-elevated-hover border border-theme-border text-theme-text font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
+            title="Download Graph Curve as High-Resolution PNG"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            <span>Save PNG</span>
+          </button>
         </div>
       </div>
 

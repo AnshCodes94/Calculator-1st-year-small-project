@@ -1,0 +1,9 @@
+{
+  "appId": "com.calcverse.app",
+  "appName": "CalcVerse",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
