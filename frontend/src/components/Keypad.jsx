@@ -47,34 +47,37 @@ export const Keypad = ({
       targetInsert = hypInsertVal || insertVal;
     }
 
-    // Keypad hierarchy using only neutral tones:
-    // - Number keys: elevated surface color
-    // - Function keys: slightly darker surface, secondary text
-    // - Operators: slightly lighter neutral, primary text
-    // - Equals "=": solid accent blue, white text (the only colored key)
-    // - Clear/Delete: same neutral as functions; turn red only on hover
-    // - SHIFT/HYP toggles: neutral by default, accent-colored outline or tint ONLY when active
-    // - Memory keys: same style as function keys, no special color
-    let btnClass = "bg-theme-key-num hover:bg-theme-key-num-hover text-theme-text border-theme-border";
+    // Tasteful, modern functional color hierarchy:
+    // - Number keys: clean slate neutral
+    // - Function keys: soft violet tint
+    // - Operator keys: soft cyan tint
+    // - Clear/Delete keys: soft rose tint
+    // - SHIFT: amber accent
+    // - HYP: purple accent
+    // - Memory: emerald accent
+    // - Equals: vibrant electric blue/indigo gradient
+    let btnClass = "bg-theme-elevated hover:bg-theme-elevated-hover text-theme-text border-theme-border";
 
     if (type === 'num') {
-      btnClass = "bg-theme-key-num hover:bg-theme-key-num-hover text-theme-text border-theme-border font-medium";
-    } else if (type === 'fn' || type === 'mem') {
-      btnClass = "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-text border-theme-border";
+      btnClass = "bg-[#141D2E] hover:bg-[#1C273C] text-slate-100 border-[#223048] font-medium";
+    } else if (type === 'fn') {
+      btnClass = "bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 border-violet-500/25";
     } else if (type === 'op') {
-      btnClass = "bg-theme-key-op hover:bg-theme-key-op-hover text-theme-text border-theme-border font-medium";
+      btnClass = "bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border-sky-500/25 font-semibold";
+    } else if (type === 'mem') {
+      btnClass = "bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border-emerald-500/25 font-mono text-xs";
     } else if (type === 'shift') {
       btnClass = isShiftActive 
-        ? "bg-theme-accent-subtle border-theme-accent text-theme-accent font-semibold"
-        : "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-text border-theme-border";
+        ? "bg-amber-500 text-black border-amber-400 font-bold shadow-sm"
+        : "bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border-amber-500/30 font-semibold";
     } else if (type === 'hyp') {
       btnClass = isHypActive 
-        ? "bg-theme-accent-subtle border-theme-accent text-theme-accent font-semibold"
-        : "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-text border-theme-border";
+        ? "bg-purple-600 text-white border-purple-400 font-bold shadow-sm"
+        : "bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border-purple-500/30 font-semibold";
     } else if (type === 'clear') {
-      btnClass = "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-error hover:border-theme-error/40 border-theme-border";
+      btnClass = "bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border-rose-500/25 font-semibold";
     } else if (type === 'equals') {
-      btnClass = "bg-theme-key-equals hover:bg-theme-key-equals-hover text-white font-semibold border-transparent";
+      btnClass = "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold border-transparent shadow-md shadow-blue-500/25";
     }
 
     const handleClick = () => {
@@ -92,11 +95,11 @@ export const Keypad = ({
       <button
         key={id}
         onClick={handleClick}
-        className={`relative h-11 sm:h-12 md:h-13 min-h-[44px] rounded-md border flex flex-col items-center justify-center font-sans text-xs sm:text-sm select-none transition-all duration-150 ease-out active:scale-[0.98] ${btnClass}`}
+        className={`relative h-11 sm:h-12 md:h-13 min-h-[44px] rounded-lg border flex flex-col items-center justify-center font-sans text-xs sm:text-sm select-none transition-all duration-150 ease-out active:scale-[0.97] ${btnClass}`}
       >
-        {/* Subtle sub-label for Shift alternative */}
+        {/* Shift alternative sub-label */}
         {shiftLabel && !isShiftActive && (
-          <span className="absolute top-0.5 left-1 text-[8px] sm:text-[9px] font-mono text-theme-muted pointer-events-none">
+          <span className="absolute top-0.5 left-1 text-[8px] sm:text-[9px] font-mono font-medium text-amber-400/80 pointer-events-none">
             {shiftLabel}
           </span>
         )}
@@ -141,7 +144,7 @@ export const Keypad = ({
         onClick: onMemoryAdd
       })}
 
-      {/* Row 2: Trigonometry & Logarithms */}
+      {/* Row 2: Trigonometry & Logarithms (Violet Group) */}
       {renderKey({
         id: 'btn-sin',
         label: 'sin',
@@ -189,7 +192,7 @@ export const Keypad = ({
         type: 'fn'
       })}
 
-      {/* Row 3: Powers & Roots */}
+      {/* Row 3: Powers & Roots (Violet Group) */}
       {renderKey({
         id: 'btn-sqr',
         label: 'x²',
@@ -218,7 +221,7 @@ export const Keypad = ({
         id: 'btn-sqrt',
         label: '√',
         insertVal: 'sqrt(',
-        glyph: <SqrtGlyph size={16} />,
+        glyph: <SqrtGlyph size={16} className="text-violet-300" />,
         type: 'fn'
       })}
       {renderKey({
@@ -254,26 +257,26 @@ export const Keypad = ({
       {renderKey({
         id: 'btn-del',
         label: 'DEL',
-        glyph: <DeleteIcon size={16} />,
+        glyph: <DeleteIcon size={16} className="text-rose-300" />,
         type: 'clear',
         onClick: onBackspace
       })}
       {renderKey({
         id: 'btn-ac',
         label: 'AC',
-        glyph: <ClearIcon size={16} />,
+        glyph: <ClearIcon size={16} className="text-rose-300" />,
         type: 'clear',
         onClick: onClearAll
       })}
 
-      {/* Row 5: Numbers 7, 8, 9 & Multiply, Divide */}
+      {/* Row 5: Numbers 7, 8, 9 & Multiply, Divide (Cyan Operators) */}
       {renderKey({ id: 'btn-7', label: '7', insertVal: '7', type: 'num' })}
       {renderKey({ id: 'btn-8', label: '8', insertVal: '8', type: 'num' })}
       {renderKey({ id: 'btn-9', label: '9', insertVal: '9', type: 'num' })}
-      {renderKey({ id: 'btn-mult', label: '×', glyph: <MultiplyGlyph size={15} />, insertVal: '*', type: 'op' })}
-      {renderKey({ id: 'btn-div', label: '÷', glyph: <DivideGlyph size={15} />, insertVal: '/', type: 'op' })}
+      {renderKey({ id: 'btn-mult', label: '×', glyph: <MultiplyGlyph size={15} className="text-sky-400" />, insertVal: '*', type: 'op' })}
+      {renderKey({ id: 'btn-div', label: '÷', glyph: <DivideGlyph size={15} className="text-sky-400" />, insertVal: '/', type: 'op' })}
 
-      {/* Row 6: Numbers 4, 5, 6 & Add, Subtract */}
+      {/* Row 6: Numbers 4, 5, 6 & Add, Subtract (Cyan Operators) */}
       {renderKey({ id: 'btn-4', label: '4', insertVal: '4', type: 'num' })}
       {renderKey({ id: 'btn-5', label: '5', insertVal: '5', type: 'num' })}
       {renderKey({ id: 'btn-6', label: '6', insertVal: '6', type: 'num' })}
@@ -288,7 +291,7 @@ export const Keypad = ({
         id: 'btn-pi',
         label: 'π',
         shiftLabel: 'e',
-        glyph: <PiGlyph size={15} />,
+        glyph: <PiGlyph size={15} className="text-violet-300" />,
         insertVal: 'pi',
         shiftInsertVal: 'e',
         type: 'fn'

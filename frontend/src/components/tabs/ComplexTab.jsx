@@ -27,23 +27,23 @@ export const ComplexTab = () => {
     <div className="w-full flex flex-col gap-4 text-left">
       <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-mono text-theme-secondary">Complex Expression (use 'i' for imaginary unit)</label>
+          <label className="text-xs font-mono font-semibold text-fuchsia-400">Complex Expression (use 'i' for imaginary unit)</label>
           <input
             type="text"
             value={expr}
             onChange={(e) => setExpr(e.target.value)}
             placeholder="e.g. (3 + 4*i) / (1 - 2*i) or (1 + i)^6"
-            className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+            className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-fuchsia-400 focus:outline-none"
           />
         </div>
 
         <button
           disabled={loading}
           onClick={handleAnalyze}
-          className="w-full py-2.5 rounded-md bg-theme-accent hover:bg-theme-accent-hover text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
+          className="w-full py-2.5 rounded-lg bg-gradient-to-r from-fuchsia-600 to-indigo-600 hover:from-fuchsia-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-fuchsia-500/20 transition-all disabled:opacity-50"
         >
           {loading ? (
-            <span>Analyzing...</span>
+            <span>Analyzing Complex Domain...</span>
           ) : (
             <>
               <ScientificIcon size={16} />
@@ -54,13 +54,13 @@ export const ComplexTab = () => {
       </div>
 
       {error && (
-        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
-          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
+        <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-rose-400 mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="font-mono text-theme-error mr-1.5 font-medium">[{error.code || 'COMPLEX_ERROR'}]</span>
-            <span className="text-theme-text font-medium">{error.message}</span>
+            <span className="font-mono text-rose-300 mr-1.5 font-bold">[{error.code || 'COMPLEX_ERROR'}]</span>
+            <span className="text-rose-200 font-medium">{error.message}</span>
             {error.hint && (
-              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+              <p className="text-rose-300/80 font-mono text-[11px] mt-1">Hint: {error.hint}</p>
             )}
           </div>
         </div>
@@ -68,49 +68,49 @@ export const ComplexTab = () => {
 
       {resultData && resultData.result && (
         <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
-          <div className="text-xs font-mono text-theme-secondary uppercase">
-            Properties Breakdown
+          <div className="text-xs font-mono font-bold text-fuchsia-400 uppercase tracking-wider">
+            Complex Properties Breakdown
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-secondary uppercase">Real Part Re(z)</span>
-              <div className="font-mono font-medium text-base text-theme-text mt-0.5">
+            <div className="p-3 rounded-lg bg-theme-elevated border border-cyan-500/20">
+              <span className="text-[10px] font-mono font-semibold text-cyan-400 uppercase">Real Part Re(z)</span>
+              <div className="font-mono font-bold text-base text-cyan-300 mt-0.5">
                 {resultData.result.real?.numeric || resultData.result.real?.exact}
               </div>
             </div>
 
-            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-secondary uppercase">Imaginary Part Im(z)</span>
-              <div className="font-mono font-medium text-base text-theme-text mt-0.5">
+            <div className="p-3 rounded-lg bg-theme-elevated border border-violet-500/20">
+              <span className="text-[10px] font-mono font-semibold text-violet-400 uppercase">Imaginary Part Im(z)</span>
+              <div className="font-mono font-bold text-base text-violet-300 mt-0.5">
                 {resultData.result.imag?.numeric || resultData.result.imag?.exact} i
               </div>
             </div>
 
-            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-secondary uppercase">Modulus |z|</span>
-              <div className="font-mono font-medium text-base text-theme-text mt-0.5">
+            <div className="p-3 rounded-lg bg-theme-elevated border border-emerald-500/20">
+              <span className="text-[10px] font-mono font-semibold text-emerald-400 uppercase">Modulus |z|</span>
+              <div className="font-mono font-bold text-base text-emerald-300 mt-0.5">
                 {resultData.result.modulus?.numeric || resultData.result.modulus?.exact}
               </div>
             </div>
 
-            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-secondary uppercase">Argument Arg(z)</span>
-              <div className="font-mono text-sm text-theme-text mt-0.5">
+            <div className="p-3 rounded-lg bg-theme-elevated border border-amber-500/20">
+              <span className="text-[10px] font-mono font-semibold text-amber-400 uppercase">Argument Arg(z)</span>
+              <div className="font-mono font-bold text-sm text-amber-300 mt-0.5">
                 {resultData.result.argument_rad?.numeric || resultData.result.argument_rad?.exact} rad ({resultData.result.argument_deg?.numeric || resultData.result.argument_deg?.exact}°)
               </div>
             </div>
 
-            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-secondary uppercase">Conjugate z*</span>
-              <div className="font-mono text-sm text-theme-text mt-0.5">
+            <div className="p-3 rounded-lg bg-theme-elevated border border-rose-500/20">
+              <span className="text-[10px] font-mono font-semibold text-rose-400 uppercase">Conjugate z*</span>
+              <div className="font-mono font-bold text-sm text-rose-300 mt-0.5">
                 {resultData.result.conjugate?.exact}
               </div>
             </div>
 
-            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-secondary uppercase">Polar Form</span>
-              <div className="font-mono text-sm text-theme-text mt-0.5">
+            <div className="p-3 rounded-lg bg-theme-elevated border border-fuchsia-500/20">
+              <span className="text-[10px] font-mono font-semibold text-fuchsia-400 uppercase">Polar Form</span>
+              <div className="font-mono font-bold text-sm text-fuchsia-300 mt-0.5">
                 r e^(iθ)
               </div>
             </div>

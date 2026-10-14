@@ -70,7 +70,7 @@ export const App = () => {
 
   // Splash Screen Timeout
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 900);
+    const timer = setTimeout(() => setShowSplash(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -230,21 +230,56 @@ export const App = () => {
     } catch (e) {}
   };
 
-  // Navigation Tabs Definition
+  // Navigation Tabs with Dedicated Color Accents
   const NAV_TABS = [
-    { id: 'scientific', label: 'Keypad', icon: <ScientificIcon size={15} /> },
-    { id: 'calculus', label: 'Calculus', icon: <CalculusIcon size={15} /> },
-    { id: 'algebra', label: 'Algebra', icon: <AlgebraIcon size={15} /> },
-    { id: 'matrix', label: 'Matrices', icon: <MatrixIcon size={15} /> },
-    { id: 'complex', label: 'Complex', icon: <ScientificIcon size={15} /> },
-    { id: 'graph', label: 'Plotter', icon: <GraphIcon size={15} /> },
-    { id: 'extras', label: 'Extras', icon: <ConverterIcon size={15} /> },
+    { 
+      id: 'scientific', 
+      label: 'Keypad', 
+      icon: <ScientificIcon size={16} />, 
+      activeClass: 'text-blue-400 border-blue-500 bg-blue-500/10'
+    },
+    { 
+      id: 'calculus', 
+      label: 'Calculus', 
+      icon: <CalculusIcon size={16} />, 
+      activeClass: 'text-violet-400 border-violet-500 bg-violet-500/10'
+    },
+    { 
+      id: 'algebra', 
+      label: 'Algebra', 
+      icon: <AlgebraIcon size={16} />, 
+      activeClass: 'text-cyan-400 border-cyan-500 bg-cyan-500/10'
+    },
+    { 
+      id: 'matrix', 
+      label: 'Matrices', 
+      icon: <MatrixIcon size={16} />, 
+      activeClass: 'text-emerald-400 border-emerald-500 bg-emerald-500/10'
+    },
+    { 
+      id: 'complex', 
+      label: 'Complex', 
+      icon: <ScientificIcon size={16} />, 
+      activeClass: 'text-fuchsia-400 border-fuchsia-500 bg-fuchsia-500/10'
+    },
+    { 
+      id: 'graph', 
+      label: 'Plotter', 
+      icon: <GraphIcon size={16} />, 
+      activeClass: 'text-amber-400 border-amber-500 bg-amber-500/10'
+    },
+    { 
+      id: 'extras', 
+      label: 'Extras', 
+      icon: <ConverterIcon size={16} />, 
+      activeClass: 'text-indigo-400 border-indigo-500 bg-indigo-500/10'
+    },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-theme-base text-theme-text font-sans">
+    <div className="relative min-h-screen flex flex-col justify-between bg-theme-base text-theme-text font-sans selection:bg-blue-500/20 selection:text-white">
       
-      {/* Minimal Splash Screen */}
+      {/* Splash Screen */}
       {showSplash && <SplashLoader />}
 
       {/* Top Navbar */}
@@ -262,11 +297,11 @@ export const App = () => {
       />
 
       {/* Main Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 flex flex-col gap-5">
+      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 flex flex-col gap-5">
         
-        {/* Navigation Tabs (Underline Style: 2px accent underline on active, text color change) */}
+        {/* Navigation Tabs (Tasteful segmented tabs with specific category accents) */}
         <nav 
-          className="flex items-center gap-1 border-b border-theme-border overflow-x-auto w-full max-w-full no-scrollbar pb-0"
+          className="flex items-center gap-1.5 border-b border-theme-border/80 overflow-x-auto w-full max-w-full no-scrollbar pb-1"
           role="tablist"
         >
           {NAV_TABS.map((tab) => {
@@ -277,15 +312,13 @@ export const App = () => {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative px-3.5 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-2 whitespace-nowrap transition-colors border-b-2 -mb-[1px] ${
+                className={`px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center gap-2 whitespace-nowrap transition-all duration-150 border ${
                   isActive
-                    ? 'text-theme-text border-theme-accent font-semibold'
-                    : 'text-theme-secondary hover:text-theme-text border-transparent'
+                    ? `${tab.activeClass} shadow-xs`
+                    : 'text-theme-secondary hover:text-theme-text hover:bg-theme-surface/60 border-transparent'
                 }`}
               >
-                <span className={isActive ? 'text-theme-accent' : 'text-theme-secondary'}>
-                  {tab.icon}
-                </span>
+                <span>{tab.icon}</span>
                 <span>{tab.label}</span>
               </button>
             );
@@ -298,9 +331,9 @@ export const App = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
               
               {/* Left Column: Calculator Unit (Display + Keypad + Steps) */}
-              <div className="lg:col-span-8 flex flex-col gap-3.5 card-surface p-4 sm:p-5">
+              <div className="lg:col-span-8 flex flex-col gap-4 card-surface p-4 sm:p-5">
                 
-                {/* Numeric Display */}
+                {/* Numeric Display Screen */}
                 <HUDDisplay
                   expression={expression}
                   result={result}
@@ -342,22 +375,22 @@ export const App = () => {
               <div className="hidden lg:flex lg:col-span-4 flex-col gap-4">
                 
                 {/* History Card Preview */}
-                <div className="card-surface p-4 text-left flex flex-col gap-2.5">
-                  <div className="flex items-center justify-between border-b border-theme-border pb-2">
-                    <span className="font-sans font-semibold text-xs text-theme-text flex items-center gap-1.5">
-                      <HistoryIcon size={14} className="text-theme-secondary" />
+                <div className="card-surface p-4 text-left flex flex-col gap-3">
+                  <div className="flex items-center justify-between border-b border-theme-border/80 pb-2.5">
+                    <span className="font-sans font-bold text-xs text-theme-text flex items-center gap-1.5">
+                      <HistoryIcon size={15} className="text-blue-400" />
                       Recent Calculations
                     </span>
                     <button
                       onClick={() => setIsHistoryOpen(true)}
-                      className="text-[11px] font-mono text-theme-accent hover:underline"
+                      className="text-[11px] font-mono font-medium text-blue-400 hover:underline"
                     >
                       View All
                     </button>
                   </div>
 
                   {history.length === 0 ? (
-                    <div className="py-6 text-center text-xs text-theme-muted font-mono">
+                    <div className="py-8 text-center text-xs text-theme-muted font-mono">
                       No calculations recorded
                     </div>
                   ) : (
@@ -366,12 +399,12 @@ export const App = () => {
                         <div
                           key={idx}
                           onClick={() => handleSelectHistory(item)}
-                          className="p-2 rounded-md bg-theme-elevated hover:bg-theme-elevated-hover border border-theme-border cursor-pointer transition-colors"
+                          className="p-2.5 rounded-lg bg-theme-elevated/70 hover:bg-theme-elevated border border-theme-border/60 hover:border-blue-500/40 cursor-pointer transition-all"
                         >
                           <div className="text-[11px] font-mono text-theme-secondary truncate">
                             {item.expression}
                           </div>
-                          <div className="text-right font-mono font-medium text-theme-text text-xs">
+                          <div className="text-right font-mono font-bold text-blue-400 text-xs mt-0.5">
                             {item.numeric || item.latex}
                           </div>
                         </div>
@@ -380,15 +413,15 @@ export const App = () => {
                   )}
                 </div>
 
-                {/* Quick Tips Card */}
-                <div className="card-surface p-4 text-left flex flex-col gap-2 text-xs text-theme-secondary leading-relaxed">
-                  <span className="font-sans font-semibold text-xs text-theme-text">
-                    Keyboard Shortcuts & Tips
+                {/* Quick Tips Card with Tasteful Color Highlights */}
+                <div className="card-surface p-4 text-left flex flex-col gap-2.5 text-xs text-theme-secondary leading-relaxed">
+                  <span className="font-sans font-bold text-xs text-theme-text flex items-center gap-1.5">
+                    ⚡ Engineering Power Tips
                   </span>
-                  <p>• Press <span className="font-medium text-theme-text">SHIFT</span> for inverse functions, roots, and antilogs.</p>
-                  <p>• Use <span className="font-medium text-theme-text">Ans</span> to recall the last evaluated result into expressions.</p>
-                  <p>• Keyboard keys: <code className="font-mono text-theme-text">Enter</code> evaluates, <code className="font-mono text-theme-text">Esc</code> clears.</p>
-                  <p>• Multi-variable equations are supported in Calculus and Algebra tabs.</p>
+                  <p>• Press <span className="px-1 py-0.5 rounded bg-amber-500/15 text-amber-300 font-mono font-semibold">SHIFT</span> to unlock inverse trig, roots, and antilogs.</p>
+                  <p>• Use <span className="px-1 py-0.5 rounded bg-sky-500/15 text-sky-300 font-mono font-semibold">Ans</span> to cascade previous evaluation results.</p>
+                  <p>• Keyboard keys: <code className="px-1 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-mono font-medium">Enter</code> evaluates, <code className="px-1 py-0.5 rounded bg-rose-500/15 text-rose-300 font-mono font-medium">Esc</code> clears.</p>
+                  <p>• Calculus and Algebra tabs support full multi-variable expressions.</p>
                 </div>
 
               </div>

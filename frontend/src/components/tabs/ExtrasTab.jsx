@@ -110,9 +110,10 @@ export const ExtrasTab = () => {
       {/* 2x2 Grid for Extras */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         
-        {/* 1. Radix Base Converter */}
+        {/* 1. Radix Base Converter (Cyan) */}
         <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
-          <span className="font-sans font-semibold text-theme-text text-sm">
+          <span className="font-sans font-bold text-cyan-400 text-sm flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-cyan-400" />
             Radix Base Conversion
           </span>
           <div className="flex flex-col gap-1">
@@ -121,7 +122,7 @@ export const ExtrasTab = () => {
               type="text"
               value={baseVal}
               onChange={(e) => setBaseVal(e.target.value)}
-              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
+              className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-cyan-400 focus:outline-none"
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -130,7 +131,7 @@ export const ExtrasTab = () => {
               <select
                 value={baseFrom}
                 onChange={(e) => setBaseFrom(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-cyan-400 focus:outline-none"
               >
                 <option value="dec">Decimal (10)</option>
                 <option value="bin">Binary (2)</option>
@@ -143,7 +144,7 @@ export const ExtrasTab = () => {
               <select
                 value={baseTo}
                 onChange={(e) => setBaseTo(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-cyan-400 focus:outline-none"
               >
                 <option value="hex">Hexadecimal (16)</option>
                 <option value="bin">Binary (2)</option>
@@ -154,23 +155,24 @@ export const ExtrasTab = () => {
           </div>
           <button
             onClick={handleBaseConvert}
-            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
+            className="w-full py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs shadow-sm transition-colors"
           >
-            Convert
+            Convert Radix
           </button>
 
           {baseResult && (
-            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between">
+            <div className="p-2.5 rounded-lg bg-theme-elevated border border-theme-border flex items-center justify-between">
               <span className="text-xs font-mono text-theme-secondary">Result ({baseTo.toUpperCase()}):</span>
-              <span className="font-mono font-medium text-sm text-theme-text">{baseResult.converted}</span>
+              <span className="font-mono font-bold text-sm text-cyan-400">{baseResult.converted}</span>
             </div>
           )}
         </div>
 
-        {/* 2. Unit Converter */}
+        {/* 2. Unit Converter (Violet) */}
         <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
-          <span className="font-sans font-semibold text-theme-text text-sm">
-            Unit Converter
+          <span className="font-sans font-bold text-violet-400 text-sm flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-violet-400" />
+            Physical Unit Converter
           </span>
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
@@ -183,7 +185,7 @@ export const ExtrasTab = () => {
                   setUnitFrom(unitMap[cat][0]);
                   setUnitTo(unitMap[cat][1] || unitMap[cat][0]);
                 }}
-                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-violet-400 focus:outline-none"
               >
                 {Object.keys(unitMap).map(k => (
                   <option key={k} value={k}>{k.toUpperCase()}</option>
@@ -196,7 +198,7 @@ export const ExtrasTab = () => {
                 type="number"
                 value={unitVal}
                 onChange={(e) => setUnitVal(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-1.5 rounded-lg bg-theme-elevated/70 border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-violet-400 focus:outline-none"
               />
             </div>
           </div>
@@ -206,7 +208,7 @@ export const ExtrasTab = () => {
               <select
                 value={unitFrom}
                 onChange={(e) => setUnitFrom(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-violet-400 focus:outline-none"
               >
                 {(unitMap[unitCat] || []).map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -218,7 +220,7 @@ export const ExtrasTab = () => {
               <select
                 value={unitTo}
                 onChange={(e) => setUnitTo(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-violet-400 focus:outline-none"
               >
                 {(unitMap[unitCat] || []).map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -228,22 +230,23 @@ export const ExtrasTab = () => {
           </div>
           <button
             onClick={handleUnitConvert}
-            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
+            className="w-full py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs shadow-sm transition-colors"
           >
-            Convert
+            Convert Unit
           </button>
 
           {unitResult && (
-            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between">
+            <div className="p-2.5 rounded-lg bg-theme-elevated border border-theme-border flex items-center justify-between">
               <span className="text-xs font-mono text-theme-secondary">Result:</span>
-              <span className="font-mono font-medium text-sm text-theme-text">{unitResult.formatted}</span>
+              <span className="font-mono font-bold text-sm text-violet-400">{unitResult.formatted}</span>
             </div>
           )}
         </div>
 
-        {/* 3. Combinatorics (nCr / nPr) */}
+        {/* 3. Combinatorics (Amber) */}
         <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
-          <span className="font-sans font-semibold text-theme-text text-sm">
+          <span className="font-sans font-bold text-amber-400 text-sm flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-amber-400" />
             Combinatorics (nCr / nPr)
           </span>
           <div className="grid grid-cols-3 gap-2">
@@ -254,7 +257,7 @@ export const ExtrasTab = () => {
                 min="0"
                 value={combN}
                 onChange={(e) => setCombN(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-1.5 rounded-lg bg-theme-elevated/70 border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-amber-400 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -264,7 +267,7 @@ export const ExtrasTab = () => {
                 min="0"
                 value={combR}
                 onChange={(e) => setCombR(e.target.value)}
-                className="w-full px-3 py-1.5 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-1.5 rounded-lg bg-theme-elevated/70 border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-amber-400 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -272,7 +275,7 @@ export const ExtrasTab = () => {
               <select
                 value={combOp}
                 onChange={(e) => setCombOp(e.target.value)}
-                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-lg bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-amber-400 focus:outline-none"
               >
                 <option value="nCr">nCr</option>
                 <option value="nPr">nPr</option>
@@ -281,22 +284,23 @@ export const ExtrasTab = () => {
           </div>
           <button
             onClick={handleCombCalc}
-            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
+            className="w-full py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold text-xs shadow-sm transition-colors"
           >
             Compute
           </button>
 
           {combResult && (
-            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between">
+            <div className="p-2.5 rounded-lg bg-theme-elevated border border-theme-border flex items-center justify-between">
               <span className="text-xs font-mono text-theme-secondary">Output:</span>
-              <span className="font-mono font-medium text-sm text-theme-text">{combResult.result?.value}</span>
+              <span className="font-mono font-bold text-sm text-amber-400">{combResult.result?.value}</span>
             </div>
           )}
         </div>
 
-        {/* 4. GCD & LCM */}
+        {/* 4. GCD & LCM (Emerald) */}
         <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
-          <span className="font-sans font-semibold text-theme-text text-sm">
+          <span className="font-sans font-bold text-emerald-400 text-sm flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
             Number Theory (GCD & LCM)
           </span>
           <div className="flex flex-col gap-1">
@@ -306,20 +310,20 @@ export const ExtrasTab = () => {
               value={gcdNums}
               onChange={(e) => setGcdNums(e.target.value)}
               placeholder="e.g. 24, 36, 60"
-              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
+              className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-emerald-400 focus:outline-none"
             />
           </div>
           <button
             onClick={handleGcdCalc}
-            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
+            className="w-full py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-sm transition-colors"
           >
             Calculate
           </button>
 
           {gcdResult && (
-            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between text-xs font-mono">
-              <div>GCD: <span className="font-medium text-theme-text">{gcdResult.gcd}</span></div>
-              <div>LCM: <span className="font-medium text-theme-text">{gcdResult.lcm}</span></div>
+            <div className="p-2.5 rounded-lg bg-theme-elevated border border-theme-border flex items-center justify-between text-xs font-mono">
+              <div>GCD: <span className="font-bold text-emerald-400">{gcdResult.gcd}</span></div>
+              <div>LCM: <span className="font-bold text-cyan-400">{gcdResult.lcm}</span></div>
             </div>
           )}
         </div>
@@ -327,12 +331,12 @@ export const ExtrasTab = () => {
       </div>
 
       {error && (
-        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
-          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
+        <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-rose-400 mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="text-theme-text font-medium">{error.message}</span>
+            <span className="text-rose-200 font-medium">{error.message}</span>
             {error.hint && (
-              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+              <p className="text-rose-300/80 font-mono text-[11px] mt-1">Hint: {error.hint}</p>
             )}
           </div>
         </div>

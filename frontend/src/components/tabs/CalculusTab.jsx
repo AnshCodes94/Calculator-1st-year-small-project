@@ -71,7 +71,7 @@ export const CalculusTab = () => {
   return (
     <div className="w-full flex flex-col gap-4 text-left">
       {/* Calculus Sub-Tabs */}
-      <div className="flex flex-wrap gap-1 p-1 rounded-md bg-theme-surface border border-theme-border">
+      <div className="flex flex-wrap gap-1.5 p-1 rounded-lg bg-theme-surface border border-theme-border">
         {[
           { id: 'diff', label: 'Differentiation (d/dx)' },
           { id: 'integ', label: 'Integration (∫ dx)' },
@@ -85,10 +85,10 @@ export const CalculusTab = () => {
               setResultData(null);
               setError(null);
             }}
-            className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors ${
+            className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-all border ${
               activeSubTab === tab.id
-                ? 'bg-theme-elevated text-theme-text font-semibold shadow-elevation'
-                : 'text-theme-secondary hover:text-theme-text'
+                ? 'bg-violet-500/15 text-violet-300 border-violet-500/30'
+                : 'text-theme-secondary hover:text-theme-text border-transparent'
             }`}
           >
             {tab.label}
@@ -101,13 +101,13 @@ export const CalculusTab = () => {
         {activeSubTab === 'diff' && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="sm:col-span-2 flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-secondary">Expression f(x)</label>
+              <label className="text-xs font-mono text-violet-400 font-semibold">Expression f(x)</label>
               <input
                 type="text"
                 value={diffExpr}
                 onChange={(e) => setDiffExpr(e.target.value)}
                 placeholder="e.g. x^3 * sin(x) + exp(2*x)"
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
             <div className="flex gap-2">
@@ -117,7 +117,7 @@ export const CalculusTab = () => {
                   type="text"
                   value={diffVar}
                   onChange={(e) => setDiffVar(e.target.value)}
-                  className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
                 />
               </div>
               <div className="flex-1 flex flex-col gap-1">
@@ -128,7 +128,7 @@ export const CalculusTab = () => {
                   max="10"
                   value={diffOrder}
                   onChange={(e) => setDiffOrder(e.target.value)}
-                  className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -139,13 +139,13 @@ export const CalculusTab = () => {
           <div className="flex flex-col gap-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="sm:col-span-2 flex flex-col gap-1">
-                <label className="text-xs font-mono text-theme-secondary">Integrand f(x)</label>
+                <label className="text-xs font-mono text-violet-400 font-semibold">Integrand f(x)</label>
                 <input
                   type="text"
                   value={integExpr}
                   onChange={(e) => setIntegExpr(e.target.value)}
                   placeholder="e.g. 2*x / (x^2 + 1)"
-                  className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -154,7 +154,7 @@ export const CalculusTab = () => {
                   type="text"
                   value={integVar}
                   onChange={(e) => setIntegVar(e.target.value)}
-                  className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@ export const CalculusTab = () => {
                   value={integLower}
                   onChange={(e) => setIntegLower(e.target.value)}
                   placeholder="e.g. 0 or -oo"
-                  className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
                 />
               </div>
               <div className="flex flex-col gap-1">
@@ -176,7 +176,7 @@ export const CalculusTab = () => {
                   value={integUpper}
                   onChange={(e) => setIntegUpper(e.target.value)}
                   placeholder="e.g. 1 or oo"
-                  className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
                 />
               </div>
             </div>
@@ -186,13 +186,13 @@ export const CalculusTab = () => {
         {activeSubTab === 'limit' && (
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div className="sm:col-span-2 flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-secondary">Expression f(x)</label>
+              <label className="text-xs font-mono text-violet-400 font-semibold">Expression f(x)</label>
               <input
                 type="text"
                 value={limitExpr}
                 onChange={(e) => setLimitExpr(e.target.value)}
                 placeholder="e.g. sin(x)/x"
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -202,7 +202,7 @@ export const CalculusTab = () => {
                 value={limitPoint}
                 onChange={(e) => setLimitPoint(e.target.value)}
                 placeholder="0 or oo"
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -210,7 +210,7 @@ export const CalculusTab = () => {
               <select
                 value={limitDir}
                 onChange={(e) => setLimitDir(e.target.value)}
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               >
                 <option value="+-">Two-sided (±)</option>
                 <option value="+">Right (+)</option>
@@ -223,13 +223,13 @@ export const CalculusTab = () => {
         {activeSubTab === 'series' && (
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
             <div className="sm:col-span-2 flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-secondary">Function f(x)</label>
+              <label className="text-xs font-mono text-violet-400 font-semibold">Function f(x)</label>
               <input
                 type="text"
                 value={seriesExpr}
                 onChange={(e) => setSeriesExpr(e.target.value)}
                 placeholder="e.g. cos(x)"
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -239,7 +239,7 @@ export const CalculusTab = () => {
                 value={seriesPoint}
                 onChange={(e) => setSeriesPoint(e.target.value)}
                 placeholder="0"
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -250,7 +250,7 @@ export const CalculusTab = () => {
                 max="12"
                 value={seriesOrder}
                 onChange={(e) => setSeriesOrder(e.target.value)}
-                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg bg-theme-elevated/70 border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-violet-500 focus:outline-none"
               />
             </div>
           </div>
@@ -260,14 +260,14 @@ export const CalculusTab = () => {
         <button
           disabled={loading}
           onClick={handleCompute}
-          className="mt-1 w-full py-2.5 rounded-md bg-theme-accent hover:bg-theme-accent-hover text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
+          className="mt-1 w-full py-2.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-violet-500/20 transition-all disabled:opacity-50"
         >
           {loading ? (
-            <span>Computing...</span>
+            <span>Computing Symbolic Calculus...</span>
           ) : (
             <>
               <CalculusIcon size={16} />
-              <span>Compute</span>
+              <span>Evaluate Calculus Expression</span>
             </>
           )}
         </button>
@@ -275,13 +275,13 @@ export const CalculusTab = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
-          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
+        <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-rose-400 mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="font-mono text-theme-error mr-1.5 font-medium">[{error.code || 'ERROR'}]</span>
-            <span className="text-theme-text font-medium">{error.message}</span>
+            <span className="font-mono text-rose-300 mr-1.5 font-bold">[{error.code || 'ERROR'}]</span>
+            <span className="text-rose-200 font-medium">{error.message}</span>
             {error.hint && (
-              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+              <p className="text-rose-300/80 font-mono text-[11px] mt-1">Hint: {error.hint}</p>
             )}
           </div>
         </div>
@@ -290,15 +290,15 @@ export const CalculusTab = () => {
       {/* Result Card & Step-by-Step Accordion */}
       {resultData && resultData.result && (
         <div className="card-surface p-4 sm:p-5 flex flex-col gap-2.5">
-          <div className="text-xs font-mono text-theme-secondary uppercase">
-            Result
+          <div className="text-xs font-mono font-bold text-violet-400 uppercase tracking-wider">
+            Symbolic Result
           </div>
-          <div className="p-3 rounded-md bg-theme-elevated border border-theme-border font-mono text-base sm:text-lg text-theme-text overflow-x-auto">
+          <div className="p-3 rounded-lg bg-theme-elevated border border-theme-border font-mono text-base sm:text-lg text-theme-text overflow-x-auto">
             {resultData.result.exact}
           </div>
           {resultData.result.numeric && (
             <div className="text-xs font-mono text-theme-secondary text-right">
-              Numerical approx: <span className="text-theme-text font-medium">{resultData.result.numeric}</span>
+              Numerical approx: <span className="text-violet-400 font-semibold">{resultData.result.numeric}</span>
             </div>
           )}
 
