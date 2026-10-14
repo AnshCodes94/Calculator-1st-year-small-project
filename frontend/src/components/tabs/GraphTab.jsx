@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 import { postApi } from '../../utils/api';
 import { GraphIcon, WarningIcon } from '../icons';
 
@@ -13,6 +12,9 @@ export const GraphTab = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const chartContainerRef = useRef(null);
+
+  // Muted line colors for quiet professional graph lines
+  const lineColors = ['#4F8EF7', '#30A46C', '#F5A524'];
 
   const plotFunctions = async () => {
     const funcs = [f1, f2, f3].filter(f => f.trim().length > 0);
@@ -33,42 +35,49 @@ export const GraphTab = () => {
       });
 
       if (data.success && window.Plotly && chartContainerRef.current) {
-        const traces = data.traces.map(t => ({
+        const traces = data.traces.map((t, idx) => ({
           x: t.x,
           y: t.y,
           mode: 'lines',
           name: t.name,
-          line: { color: t.color, width: 2.5 },
-          connectgaps: false // avoids connecting through vertical asymptotes
+          line: { color: lineColors[idx % lineColors.length], width: 2 },
+          connectgaps: false
         }));
 
+        const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
+        const zeroLineColor = isDark ? '#262C36' : '#E4E7EC';
+        const textColor = isDark ? '#9AA3AF' : '#475467';
+
         const layout = {
-          paper_bgcolor: 'rgba(7, 10, 18, 0.4)',
-          plot_bgcolor: 'rgba(14, 21, 38, 0.6)',
-          margin: { t: 30, r: 20, l: 45, b: 40 },
+          paper_bgcolor: 'transparent',
+          plot_bgcolor: 'transparent',
+          margin: { t: 20, r: 20, l: 40, b: 35 },
           xaxis: {
             range: [data.x_min, data.x_max],
-            gridcolor: 'rgba(255, 255, 255, 0.08)',
-            zerolinecolor: 'rgba(0, 242, 254, 0.4)',
-            zerolinewidth: 2,
-            color: '#94a3b8'
+            gridcolor: gridColor,
+            zerolinecolor: zeroLineColor,
+            zerolinewidth: 1,
+            color: textColor,
+            tickfont: { family: 'JetBrains Mono', size: 10 }
           },
           yaxis: {
-            gridcolor: 'rgba(255, 255, 255, 0.08)',
-            zerolinecolor: 'rgba(0, 242, 254, 0.4)',
-            zerolinewidth: 2,
-            color: '#94a3b8'
+            gridcolor: gridColor,
+            zerolinecolor: zeroLineColor,
+            zerolinewidth: 1,
+            color: textColor,
+            tickfont: { family: 'JetBrains Mono', size: 10 }
           },
           legend: {
-            font: { color: '#f8fafc' },
-            bgcolor: 'rgba(11, 15, 25, 0.8)'
+            font: { color: textColor, family: 'Inter', size: 11 },
+            bgcolor: 'transparent'
           },
           autosize: true
         };
 
         const config = {
           responsive: true,
-          displayModeBar: true,
+          displayModeBar: false,
           displaylogo: false
         };
 
@@ -82,97 +91,96 @@ export const GraphTab = () => {
   };
 
   useEffect(() => {
-    // Initial plot on mount
     plotFunctions();
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-5 text-left">
+    <div className="w-full flex flex-col gap-4 text-left">
       {/* Functions Setup Card */}
-      <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
+      <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-[#00f2fe] font-bold">Function f₁(x)</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">f₁(x)</label>
             <input
               type="text"
               value={f1}
               onChange={(e) => setF1(e.target.value)}
               placeholder="e.g. sin(x)"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-[#8b5cf6] font-bold">Function f₂(x)</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">f₂(x)</label>
             <input
               type="text"
               value={f2}
               onChange={(e) => setF2(e.target.value)}
               placeholder="e.g. cos(x)"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-secondary focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
             />
           </div>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-[#f43f5e] font-bold">Function f₃(x) (Optional)</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">f₃(x) (Optional)</label>
             <input
               type="text"
               value={f3}
               onChange={(e) => setF3(e.target.value)}
               placeholder="e.g. 0.2*x^2 - 3"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-tertiary focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
             />
           </div>
         </div>
 
         {/* Range & Action */}
         <div className="flex flex-wrap items-end gap-3">
-          <div className="w-28 flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-theme-muted">x min</label>
+          <div className="w-24 sm:w-28 flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">x min</label>
             <input
               type="number"
               value={xMin}
               onChange={(e) => setXMin(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
             />
           </div>
-          <div className="w-28 flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-theme-muted">x max</label>
+          <div className="w-24 sm:w-28 flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">x max</label>
             <input
               type="number"
               value={xMax}
               onChange={(e) => setXMax(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
             />
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             disabled={loading}
             onClick={plotFunctions}
-            className="flex-1 min-w-[160px] py-2.5 rounded-xl bg-theme-equals text-white font-bold text-sm shadow-glow-primary flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="flex-1 min-w-[140px] py-2 rounded-md bg-theme-accent hover:bg-theme-accent-hover text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
           >
-            <GraphIcon size={18} />
-            <span>{loading ? 'Plotting Coordinates...' : 'Render Interactive Curves'}</span>
-          </motion.button>
+            <GraphIcon size={16} />
+            <span>{loading ? 'Plotting...' : 'Plot'}</span>
+          </button>
         </div>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 rounded-2xl bg-red-950/80 border border-red-500/60 text-left flex items-start gap-3">
-          <WarningIcon size={20} className="text-red-400 mt-0.5 shrink-0" />
+        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="text-white font-medium">{error.message}</span>
-            <p className="text-red-300 font-mono text-[11px] mt-1">💡 {error.hint}</p>
+            <span className="text-theme-text font-medium">{error.message}</span>
+            {error.hint && (
+              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+            )}
           </div>
         </div>
       )}
 
       {/* Plotly Canvas Container */}
-      <div className="glass-panel p-3 sm:p-4 overflow-hidden rounded-2xl">
+      <div className="card-surface p-3 sm:p-4 rounded-md overflow-hidden">
         <div 
           ref={chartContainerRef} 
-          className="w-full h-[450px] sm:h-[520px] rounded-xl overflow-hidden"
+          className="w-full h-[400px] sm:h-[480px]"
         />
       </div>
     </div>

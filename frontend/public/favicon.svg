@@ -1,46 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
-  <defs>
-    <!-- Quantum Glow & Gradients -->
-    <linearGradient id="cv-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00f2fe" />
-      <stop offset="50%" stop-color="#8b5cf6" />
-      <stop offset="100%" stop-color="#f43f5e" />
-    </linearGradient>
-    <filter id="cv-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3.5" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
-  </defs>
-
-  <!-- Futuristic Hexagon Geometry Frame -->
-  <polygon points="60,6 107,33 107,87 60,114 13,87 13,33" 
-           stroke="url(#cv-grad)" 
-           stroke-width="2.5" 
-           stroke-opacity="0.35" 
-           fill="rgba(11, 15, 25, 0.75)" />
-
-  <!-- Inner Sigma + Integral + Orbit Glyph -->
-  <!-- Integral Path flowing into Infinity Curve -->
-  <path d="M 60,24 C 68,24 72,29 72,36 C 72,46 52,56 46,62 C 38,70 38,82 46,90 C 54,98 68,96 74,90" 
-        stroke="url(#cv-grad)" 
-        stroke-width="5" 
-        stroke-linecap="round" 
-        stroke-linejoin="round"
-        filter="url(#cv-glow)" />
-
-  <!-- Angular Sigma Accent Branch -->
-  <path d="M 44,32 L 76,32 L 60,54 L 76,76" 
-        stroke="url(#cv-grad)" 
-        stroke-width="4.5" 
-        stroke-linecap="round" 
-        stroke-linejoin="round"
-        stroke-opacity="0.85" />
-
-  <!-- Quantum Core Pulse Particle -->
-  <circle cx="60" cy="54" r="3.5" fill="#00f2fe" filter="url(#cv-glow)" />
-  <circle cx="76" cy="32" r="2.5" fill="#f43f5e" />
-  <circle cx="44" cy="90" r="2.5" fill="#8b5cf6" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="8" fill="#161A20"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" stroke="#262C36"/>
+  <path d="M21 7a4 4 0 0 0-4 4v10a4 4 0 0 1-4 4" stroke="#4F8EF7" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M13 16h6" stroke="#4F8EF7" stroke-width="2.5" stroke-linecap="round"/>
 </svg>

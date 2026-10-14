@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { postApi } from '../../utils/api';
 import { StepByStepAccordion } from '../StepByStepAccordion';
 import { AlgebraIcon, WarningIcon } from '../icons';
@@ -65,11 +64,11 @@ export const AlgebraTab = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-4 text-left">
       {/* Sub-Tabs */}
-      <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-theme-surface/80 border border-theme-border/60">
+      <div className="flex flex-wrap gap-1 p-1 rounded-md bg-theme-surface border border-theme-border">
         {[
-          { id: 'single', label: 'Single Equation Solver' },
+          { id: 'single', label: 'Single Equation' },
           { id: 'system', label: 'Linear Equations System' },
           { id: 'manipulate', label: 'Simplify, Expand & Factor' },
         ].map((tab) => (
@@ -80,10 +79,10 @@ export const AlgebraTab = () => {
               setResultData(null);
               setError(null);
             }}
-            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+            className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-colors ${
               activeSubTab === tab.id
-                ? 'bg-theme-primary/15 text-theme-primary border border-theme-primary/40 shadow-glow-primary'
-                : 'text-theme-muted hover:text-theme-text hover:bg-theme-glass'
+                ? 'bg-theme-elevated text-theme-text font-semibold shadow-elevation'
+                : 'text-theme-secondary hover:text-theme-text'
             }`}
           >
             {tab.label}
@@ -93,56 +92,54 @@ export const AlgebraTab = () => {
 
       {/* Single Equation Solver */}
       {activeSubTab === 'single' && (
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4 text-left">
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="sm:col-span-2 flex flex-col gap-1.5">
-              <label className="text-xs font-mono text-theme-muted">Equation (f(x) = 0 or f(x) = g(x))</label>
+            <div className="sm:col-span-2 flex flex-col gap-1">
+              <label className="text-xs font-mono text-theme-secondary">Equation (f(x) = 0 or f(x) = g(x))</label>
               <input
                 type="text"
                 value={eqStr}
                 onChange={(e) => setEqStr(e.target.value)}
                 placeholder="e.g. 2*x^2 - 4*x - 6 = 0"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
               />
             </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-mono text-theme-muted">Solve For Variable</label>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-mono text-theme-secondary">Variable</label>
               <input
                 type="text"
                 value={eqVar}
                 onChange={(e) => setEqVar(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+                className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
               />
             </div>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             disabled={loading}
             onClick={handleSolveSingle}
-            className="w-full py-3 rounded-xl bg-theme-equals text-white font-bold text-sm shadow-glow-primary flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-2.5 rounded-md bg-theme-accent hover:bg-theme-accent-hover text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
           >
-            <AlgebraIcon size={18} />
-            <span>Find Roots & Solutions</span>
-          </motion.button>
+            <AlgebraIcon size={16} />
+            <span>Find Solutions</span>
+          </button>
         </div>
       )}
 
       {/* Linear System Solver */}
       {activeSubTab === 'system' && (
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4 text-left">
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-theme-muted font-bold">System Equations</span>
+            <span className="text-xs font-mono text-theme-secondary">Equations System</span>
             <button
               onClick={() => setSystemEqs([...systemEqs, ''])}
-              className="px-2.5 py-1 rounded-lg bg-theme-primary/15 text-theme-primary text-xs font-mono font-bold hover:bg-theme-primary/25 transition-colors"
+              className="px-2.5 py-1 rounded-md bg-theme-elevated text-theme-text text-xs font-mono hover:bg-theme-hover border border-theme-border transition-colors"
             >
               + Add Equation
             </button>
           </div>
 
-          <div className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-2">
             {systemEqs.map((eq, idx) => (
               <div key={idx} className="flex gap-2 items-center">
                 <input
@@ -154,12 +151,12 @@ export const AlgebraTab = () => {
                     setSystemEqs(newEqs);
                   }}
                   placeholder={`Equation ${idx + 1}: e.g. 2*x + 3*y = 7`}
-                  className="flex-1 px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+                  className="flex-1 px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
                 />
                 {systemEqs.length > 2 && (
                   <button
                     onClick={() => setSystemEqs(systemEqs.filter((_, i) => i !== idx))}
-                    className="p-2.5 rounded-xl text-rose-400 hover:bg-rose-500/10 text-xs transition-colors"
+                    className="p-2 rounded-md text-theme-muted hover:text-theme-error hover:bg-theme-hover text-xs transition-colors"
                   >
                     ✕
                   </button>
@@ -168,89 +165,83 @@ export const AlgebraTab = () => {
             ))}
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             disabled={loading}
-            onClick={handleSolveLinearSystem}
-            className="w-full py-3 rounded-xl bg-theme-equals text-white font-bold text-sm shadow-glow-primary flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            onClick={handleSolveSystem}
+            className="w-full py-2.5 rounded-md bg-theme-accent hover:bg-theme-accent-hover text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
           >
-            <AlgebraIcon size={18} />
-            <span>Solve Linear System [A | b]</span>
-          </motion.button>
+            <AlgebraIcon size={16} />
+            <span>Solve Linear System</span>
+          </button>
         </div>
       )}
 
       {/* Expression Manipulation */}
       {activeSubTab === 'manipulate' && (
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4 text-left">
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-theme-muted">Algebraic Expression</label>
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">Algebraic Expression</label>
             <input
               type="text"
               value={manipExpr}
               onChange={(e) => setManipExpr(e.target.value)}
               placeholder="e.g. (x + 3)^3 or x^2 - 9"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+          <div className="grid grid-cols-3 gap-2">
+            <button
               disabled={loading}
               onClick={() => handleManipulate('simplify')}
-              className="py-3 rounded-xl bg-theme-primary/15 border border-theme-primary/30 text-theme-primary font-bold text-xs sm:text-sm hover:bg-theme-primary/25 transition-all"
+              className="py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs sm:text-sm transition-colors"
             >
               Simplify
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            </button>
+            <button
               disabled={loading}
               onClick={() => handleManipulate('expand')}
-              className="py-3 rounded-xl bg-theme-secondary/15 border border-theme-secondary/30 text-theme-secondary font-bold text-xs sm:text-sm hover:bg-theme-secondary/25 transition-all"
+              className="py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs sm:text-sm transition-colors"
             >
               Expand
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+            </button>
+            <button
               disabled={loading}
               onClick={() => handleManipulate('factorize')}
-              className="py-3 rounded-xl bg-theme-tertiary/15 border border-theme-tertiary/30 text-theme-tertiary font-bold text-xs sm:text-sm hover:bg-theme-tertiary/25 transition-all"
+              className="py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs sm:text-sm transition-colors"
             >
               Factorize
-            </motion.button>
+            </button>
           </div>
         </div>
       )}
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 rounded-2xl bg-red-950/80 border border-red-500/60 text-left flex items-start gap-3">
-          <WarningIcon size={20} className="text-red-400 mt-0.5 shrink-0" />
+        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="font-mono font-bold text-red-300 mr-2">[{error.code || 'ERROR'}]</span>
-            <span className="text-white font-medium">{error.message}</span>
-            <p className="text-red-300 font-mono text-[11px] mt-1">💡 {error.hint}</p>
+            <span className="font-mono text-theme-error mr-1.5 font-medium">[{error.code || 'ERROR'}]</span>
+            <span className="text-theme-text font-medium">{error.message}</span>
+            {error.hint && (
+              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+            )}
           </div>
         </div>
       )}
 
       {/* Result Display */}
       {resultData && (
-        <div className="glass-panel p-5 sm:p-6 text-left flex flex-col gap-3">
-          <div className="text-xs font-mono font-bold text-theme-primary uppercase tracking-wider">
-            Algebraic Result
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-2.5">
+          <div className="text-xs font-mono text-theme-secondary uppercase">
+            Result
           </div>
 
           {resultData.solutions && Array.isArray(resultData.solutions) && (
             <div className="flex flex-wrap gap-2">
               {resultData.solutions.map((sol, idx) => (
-                <div key={idx} className="px-4 py-2.5 rounded-xl bg-theme-surface/90 border border-theme-border font-mono text-base text-theme-text">
-                  x_{idx + 1} = <span className="text-theme-primary font-bold">{sol.numeric || sol.exact}</span>
+                <div key={idx} className="px-3 py-2 rounded-md bg-theme-elevated border border-theme-border font-mono text-xs sm:text-sm text-theme-text">
+                  x_{idx + 1} = <span className="font-semibold text-theme-text">{sol.numeric || sol.exact}</span>
                 </div>
               ))}
             </div>
@@ -259,15 +250,15 @@ export const AlgebraTab = () => {
           {resultData.solutions && !Array.isArray(resultData.solutions) && (
             <div className="flex flex-wrap gap-2">
               {Object.entries(resultData.solutions).map(([k, v]) => (
-                <div key={k} className="px-4 py-2.5 rounded-xl bg-theme-surface/90 border border-theme-border font-mono text-base text-theme-text">
-                  {k} = <span className="text-theme-primary font-bold">{v.numeric || v.exact}</span>
+                <div key={k} className="px-3 py-2 rounded-md bg-theme-elevated border border-theme-border font-mono text-xs sm:text-sm text-theme-text">
+                  {k} = <span className="font-semibold text-theme-text">{v.numeric || v.exact}</span>
                 </div>
               ))}
             </div>
           )}
 
           {resultData.result && (
-            <div className="p-4 rounded-xl bg-theme-surface/90 border border-theme-border font-display text-xl sm:text-2xl text-theme-text overflow-x-auto">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border font-mono text-base sm:text-lg text-theme-text overflow-x-auto">
               {resultData.result.exact}
             </div>
           )}

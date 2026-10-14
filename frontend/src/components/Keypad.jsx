@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { 
   DivideGlyph, 
   MultiplyGlyph, 
@@ -25,21 +24,6 @@ export const Keypad = ({
   onMemoryClear
 }) => {
 
-  // Button spring micro-interaction variants
-  const keyVariants = {
-    hover: { 
-      scale: 1.04, 
-      y: -2,
-      transition: { type: 'spring', stiffness: 450, damping: 20 }
-    },
-    tap: { 
-      scale: 0.94, 
-      y: 1,
-      transition: { type: 'spring', stiffness: 500, damping: 15 }
-    }
-  };
-
-  // Helper to render button labels and sub-labels (with shiftness)
   const renderKey = ({
     id,
     label,
@@ -48,7 +32,7 @@ export const Keypad = ({
     insertVal,
     shiftInsertVal,
     hypInsertVal,
-    type = 'num', // 'num', 'fn', 'op', 'shift', 'equals', 'clear', 'mem'
+    type = 'num', // 'num', 'fn', 'op', 'shift', 'hyp', 'equals', 'clear', 'mem'
     onClick,
     glyph
   }) => {
@@ -63,22 +47,34 @@ export const Keypad = ({
       targetInsert = hypInsertVal || insertVal;
     }
 
-    // Type-based class styling
-    let btnStyle = "bg-theme-key hover:bg-theme-key-hover text-theme-text border-theme-border/60";
-    if (type === 'op') {
-      btnStyle = "bg-theme-operator hover:bg-theme-primary/25 text-theme-primary border-theme-primary/30 font-bold shadow-xs";
-    } else if (type === 'fn') {
-      btnStyle = "bg-theme-glass hover:bg-theme-glass-hover text-indigo-300 dark:text-indigo-200 border-indigo-500/20";
+    // Keypad hierarchy using only neutral tones:
+    // - Number keys: elevated surface color
+    // - Function keys: slightly darker surface, secondary text
+    // - Operators: slightly lighter neutral, primary text
+    // - Equals "=": solid accent blue, white text (the only colored key)
+    // - Clear/Delete: same neutral as functions; turn red only on hover
+    // - SHIFT/HYP toggles: neutral by default, accent-colored outline or tint ONLY when active
+    // - Memory keys: same style as function keys, no special color
+    let btnClass = "bg-theme-key-num hover:bg-theme-key-num-hover text-theme-text border-theme-border";
+
+    if (type === 'num') {
+      btnClass = "bg-theme-key-num hover:bg-theme-key-num-hover text-theme-text border-theme-border font-medium";
+    } else if (type === 'fn' || type === 'mem') {
+      btnClass = "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-text border-theme-border";
+    } else if (type === 'op') {
+      btnClass = "bg-theme-key-op hover:bg-theme-key-op-hover text-theme-text border-theme-border font-medium";
     } else if (type === 'shift') {
-      btnStyle = isShiftActive 
-        ? "bg-amber-500 text-black border-amber-400 font-extrabold shadow-[0_0_20px_rgba(245,158,11,0.6)]" 
-        : "bg-amber-500/15 hover:bg-amber-500/25 text-amber-400 border-amber-500/30 font-bold";
-    } else if (type === 'equals') {
-      btnStyle = "bg-theme-equals text-white font-extrabold shadow-glow-primary border-transparent text-xl";
+      btnClass = isShiftActive 
+        ? "bg-theme-accent-subtle border-theme-accent text-theme-accent font-semibold"
+        : "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-text border-theme-border";
+    } else if (type === 'hyp') {
+      btnClass = isHypActive 
+        ? "bg-theme-accent-subtle border-theme-accent text-theme-accent font-semibold"
+        : "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-text border-theme-border";
     } else if (type === 'clear') {
-      btnStyle = "bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border-rose-500/30 font-bold";
-    } else if (type === 'mem') {
-      btnStyle = "bg-emerald-500/12 hover:bg-emerald-500/22 text-emerald-300 border-emerald-500/25 text-xs font-bold font-mono";
+      btnClass = "bg-theme-key-fn hover:bg-theme-key-fn-hover text-theme-secondary hover:text-theme-error hover:border-theme-error/40 border-theme-border";
+    } else if (type === 'equals') {
+      btnClass = "bg-theme-key-equals hover:bg-theme-key-equals-hover text-white font-semibold border-transparent";
     }
 
     const handleClick = () => {
@@ -86,7 +82,6 @@ export const Keypad = ({
         onClick();
       } else if (targetInsert) {
         onInsert(targetInsert);
-        // Automatically deactivate shift after inserting single shifted key
         if (isShiftActive && type !== 'shift') {
           onToggleShift(false);
         }
@@ -94,27 +89,24 @@ export const Keypad = ({
     };
 
     return (
-      <motion.button
+      <button
         key={id}
-        variants={keyVariants}
-        whileHover="hover"
-        whileTap="tap"
         onClick={handleClick}
-        className={`relative h-11 sm:h-12 md:h-14 min-h-[44px] rounded-lg sm:rounded-xl border flex flex-col items-center justify-center font-sans transition-colors select-none text-xs sm:text-sm md:text-base px-1 ${btnStyle}`}
+        className={`relative h-11 sm:h-12 md:h-13 min-h-[44px] rounded-md border flex flex-col items-center justify-center font-sans text-xs sm:text-sm select-none transition-all duration-150 ease-out active:scale-[0.98] ${btnClass}`}
       >
-        {/* Secondary Sub-Label for Shift mode indicator */}
+        {/* Subtle sub-label for Shift alternative */}
         {shiftLabel && !isShiftActive && (
-          <span className="absolute top-0.5 sm:top-1 left-1 sm:left-1.5 text-[8px] sm:text-[9px] md:text-[10px] font-mono font-bold text-amber-400/90 pointer-events-none">
+          <span className="absolute top-0.5 left-1 text-[8px] sm:text-[9px] font-mono text-theme-muted pointer-events-none">
             {shiftLabel}
           </span>
         )}
-        {glyph ? glyph : <span className="font-semibold truncate max-w-full">{currentLabel}</span>}
-      </motion.button>
+        {glyph ? glyph : <span className="truncate max-w-full px-1">{currentLabel}</span>}
+      </button>
     );
   };
 
   return (
-    <div className="grid grid-cols-5 gap-1.5 sm:gap-2 md:gap-2.5 w-full">
+    <div className="grid grid-cols-5 gap-1.5 sm:gap-2 w-full">
       
       {/* Row 1: Function Modifiers & Memory */}
       {renderKey({
@@ -127,7 +119,7 @@ export const Keypad = ({
       {renderKey({
         id: 'btn-hyp',
         label: 'HYP',
-        type: 'fn',
+        type: 'hyp',
         onClick: () => onToggleHyp()
       })}
       {renderKey({
@@ -226,7 +218,7 @@ export const Keypad = ({
         id: 'btn-sqrt',
         label: '√',
         insertVal: 'sqrt(',
-        glyph: <SqrtGlyph size={18} />,
+        glyph: <SqrtGlyph size={16} />,
         type: 'fn'
       })}
       {renderKey({
@@ -262,14 +254,14 @@ export const Keypad = ({
       {renderKey({
         id: 'btn-del',
         label: 'DEL',
-        glyph: <DeleteIcon size={18} />,
+        glyph: <DeleteIcon size={16} />,
         type: 'clear',
         onClick: onBackspace
       })}
       {renderKey({
         id: 'btn-ac',
         label: 'AC',
-        glyph: <ClearIcon size={18} />,
+        glyph: <ClearIcon size={16} />,
         type: 'clear',
         onClick: onClearAll
       })}
@@ -278,8 +270,8 @@ export const Keypad = ({
       {renderKey({ id: 'btn-7', label: '7', insertVal: '7', type: 'num' })}
       {renderKey({ id: 'btn-8', label: '8', insertVal: '8', type: 'num' })}
       {renderKey({ id: 'btn-9', label: '9', insertVal: '9', type: 'num' })}
-      {renderKey({ id: 'btn-mult', label: '×', glyph: <MultiplyGlyph size={18} />, insertVal: '*', type: 'op' })}
-      {renderKey({ id: 'btn-div', label: '÷', glyph: <DivideGlyph size={18} />, insertVal: '/', type: 'op' })}
+      {renderKey({ id: 'btn-mult', label: '×', glyph: <MultiplyGlyph size={15} />, insertVal: '*', type: 'op' })}
+      {renderKey({ id: 'btn-div', label: '÷', glyph: <DivideGlyph size={15} />, insertVal: '/', type: 'op' })}
 
       {/* Row 6: Numbers 4, 5, 6 & Add, Subtract */}
       {renderKey({ id: 'btn-4', label: '4', insertVal: '4', type: 'num' })}
@@ -296,7 +288,7 @@ export const Keypad = ({
         id: 'btn-pi',
         label: 'π',
         shiftLabel: 'e',
-        glyph: <PiGlyph size={18} />,
+        glyph: <PiGlyph size={15} />,
         insertVal: 'pi',
         shiftInsertVal: 'e',
         type: 'fn'

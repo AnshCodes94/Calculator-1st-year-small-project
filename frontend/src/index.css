@@ -15,9 +15,9 @@
 
   html, body {
     background-color: var(--bg-base);
-    color: var(--text-main);
-    font-family: 'Space Grotesk', 'Inter', -apple-system, sans-serif;
-    transition: background-color 0.4s var(--ease-smooth), color 0.4s var(--ease-smooth);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color var(--duration-normal) var(--ease-default), color var(--duration-normal) var(--ease-default);
     min-height: 100vh;
     overflow-x: hidden;
     padding-top: env(safe-area-inset-top);
@@ -26,12 +26,30 @@
     padding-right: env(safe-area-inset-right);
   }
 
+  /* Subtle ambient lighting at the top for premium depth */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 380px;
+    background: radial-gradient(ellipse 70% 60% at 50% -10%, rgba(59, 130, 246, 0.12), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
   button, input, select, textarea {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    font-family: inherit;
   }
 
-  /* Hide scrollbar utility for mobile touch tabs */
+  button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -40,7 +58,7 @@
     scrollbar-width: none;
   }
 
-  /* Custom Smooth Scrollbar */
+  /* Smooth custom scrollbars */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -49,201 +67,98 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--border-glass);
+    background: var(--border-color);
     border-radius: var(--radius-full);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-primary);
+    background: var(--text-muted);
   }
 
-  /* Selection Style */
   ::selection {
-    background: var(--accent-primary);
-    color: #000;
+    background: var(--accent-subtle);
+    color: var(--text-primary);
   }
 }
 
 /* ==========================================================================
-   VISUAL EFFECTS: MESH GRADIENT, NOISE, HUD & GLASS CARDS
+   CARDS & PANELS
    ========================================================================== */
 
-/* Animated Mesh Gradient Background */
-.mesh-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-  opacity: 0.65;
-  transition: opacity 0.5s ease;
-}
-
-.aurora-blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  will-change: transform;
-}
-
-.blob-1 {
-  top: -10%;
-  left: 10%;
-  width: 550px;
-  height: 550px;
-  background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
-  opacity: 0.22;
-  animation: blobMotion1 18s infinite alternate ease-in-out;
-}
-
-.blob-2 {
-  bottom: 5%;
-  right: 5%;
-  width: 650px;
-  height: 650px;
-  background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%);
-  opacity: 0.18;
-  animation: blobMotion2 22s infinite alternate ease-in-out;
-}
-
-.blob-3 {
-  top: 40%;
-  left: 45%;
-  width: 480px;
-  height: 480px;
-  background: radial-gradient(circle, var(--accent-tertiary) 0%, transparent 70%);
-  opacity: 0.14;
-  animation: blobMotion3 20s infinite alternate ease-in-out;
-}
-
-@keyframes blobMotion1 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(80px, 40px) scale(1.15); }
-  100% { transform: translate(-40px, 70px) scale(0.9); }
-}
-
-@keyframes blobMotion2 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-70px, -50px) scale(1.2); }
-  100% { transform: translate(50px, -20px) scale(0.95); }
-}
-
-@keyframes blobMotion3 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-50px, 60px) scale(1.1); }
-  100% { transform: translate(60px, -40px) scale(0.85); }
-}
-
-/* Subtle Film Grain Noise Overlay */
-.noise-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-}
-
-/* Glass Card with Conic/Linear Gradient Border */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  position: relative;
+/* Modern Card Surface */
+.card-surface {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  transition: border-color var(--duration-normal) var(--ease-smooth), box-shadow var(--duration-normal) var(--ease-smooth);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default);
 }
 
-.glass-panel:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+.card-surface:hover {
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-.glass-panel-glow {
-  border: 1px solid transparent;
-  background-image: linear-gradient(var(--bg-card), var(--bg-card)), var(--border-gradient);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+[data-theme="light"] .card-surface:hover {
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
-/* Futuristic HUD Display Scanline Effect */
-.hud-screen {
-  background: rgba(4, 7, 14, 0.88);
-  border: 1px solid var(--border-glow);
-  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8), 0 0 25px var(--glow-hud);
+/* Elevated Card */
+.card-elevated {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Display Screen Panel */
+.display-screen {
+  background-color: var(--display-bg);
+  border: 1px solid var(--display-border);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
   position: relative;
-  overflow: hidden;
 }
 
-.hud-screen::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-  z-index: 2;
-  background-size: 100% 3px, 6px 100%;
-  pointer-events: none;
-  opacity: 0.75;
+/* Error horizontal nudge */
+@keyframes errorNudge {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
 }
 
-/* HUD Scanning Light Beam */
-.hud-scan-beam {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-  box-shadow: 0 0 12px var(--accent-primary);
-  opacity: 0.4;
-  animation: scanlinePass 5s linear infinite;
-  pointer-events: none;
-  z-index: 3;
+.error-nudge {
+  animation: errorNudge 0.2s ease-out;
 }
 
-@keyframes scanlinePass {
-  0% { transform: translateY(-100%); opacity: 0; }
-  15% { opacity: 0.6; }
-  85% { opacity: 0.6; }
-  100% { transform: translateY(600px); opacity: 0; }
-}
-
-/* Blinking Terminal Caret */
-.hud-caret {
-  display: inline-block;
-  width: 2px;
-  height: 1.2em;
-  background-color: var(--accent-primary);
-  box-shadow: 0 0 8px var(--accent-primary);
-  margin-left: 3px;
-  vertical-align: text-bottom;
-  animation: caretBlink 1s infinite steps(2);
-}
-
+/* Blinking terminal-style caret */
 @keyframes caretBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
 
-/* KaTeX Override for Theme Lighting */
+.standard-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  background-color: var(--color-cyan);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: caretBlink 1s infinite steps(2);
+}
+
+/* KaTeX Output */
 .katex {
-  color: var(--text-main) !important;
-  font-size: 1.15em;
+  color: var(--text-primary) !important;
+  font-size: 1.1em;
 }
 
 .katex-display {
-  margin: 0.25em 0 !important;
+  margin: 0.2em 0 !important;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
-.katex .accent-glow {
-  text-shadow: 0 0 12px var(--glow-primary);
-}
-
-/* Accessible Reduced Motion Support */
+/* Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -253,7 +168,7 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .hud-scan-beam, .aurora-blob {
+  .error-nudge, .standard-caret {
     animation: none !important;
   }
 }

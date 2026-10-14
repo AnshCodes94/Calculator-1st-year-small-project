@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from './hooks/useTheme';
-import { useParallax } from './hooks/useParallax';
 import { postApi } from './utils/api';
 
 import { Navbar } from './components/Navbar';
@@ -34,9 +32,8 @@ export const App = () => {
   // Splash Screen State
   const [showSplash, setShowSplash] = useState(true);
 
-  // Theme & Ambient Parallax
+  // Theme Management
   const { theme, switchTheme } = useTheme();
-  const { normalizedX, normalizedY, prefersReducedMotion } = useParallax();
 
   // Calculator State
   const [expression, setExpression] = useState('');
@@ -69,11 +66,11 @@ export const App = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   // Navigation Active Tab
-  const [activeTab, setActiveTab] = useState('scientific'); // 'scientific', 'calculus', 'algebra', 'matrix', 'complex', 'graph', 'extras', '404'
+  const [activeTab, setActiveTab] = useState('scientific');
 
   // Splash Screen Timeout
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 1400);
+    const timer = setTimeout(() => setShowSplash(false), 900);
     return () => clearTimeout(timer);
   }, []);
 
@@ -235,53 +232,20 @@ export const App = () => {
 
   // Navigation Tabs Definition
   const NAV_TABS = [
-    { id: 'scientific', label: 'Keypad', icon: <ScientificIcon size={16} /> },
-    { id: 'calculus', label: 'Calculus', icon: <CalculusIcon size={16} /> },
-    { id: 'algebra', label: 'Algebra', icon: <AlgebraIcon size={16} /> },
-    { id: 'matrix', label: 'Matrices', icon: <MatrixIcon size={16} /> },
-    { id: 'complex', label: 'Complex', icon: <ScientificIcon size={16} /> },
-    { id: 'graph', label: 'Plotter', icon: <GraphIcon size={16} /> },
-    { id: 'extras', label: 'Extras', icon: <ConverterIcon size={16} /> },
+    { id: 'scientific', label: 'Keypad', icon: <ScientificIcon size={15} /> },
+    { id: 'calculus', label: 'Calculus', icon: <CalculusIcon size={15} /> },
+    { id: 'algebra', label: 'Algebra', icon: <AlgebraIcon size={15} /> },
+    { id: 'matrix', label: 'Matrices', icon: <MatrixIcon size={15} /> },
+    { id: 'complex', label: 'Complex', icon: <ScientificIcon size={15} /> },
+    { id: 'graph', label: 'Plotter', icon: <GraphIcon size={15} /> },
+    { id: 'extras', label: 'Extras', icon: <ConverterIcon size={15} /> },
   ];
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between overflow-hidden">
+    <div className="min-h-screen flex flex-col justify-between bg-theme-base text-theme-text font-sans">
       
-      {/* Animated Splash Screen */}
-      <AnimatePresence>
-        {showSplash && <SplashLoader />}
-      </AnimatePresence>
-
-      {/* Mesh Gradient Ambient Background Blobs with Subtle Mouse Parallax */}
-      <div className="mesh-bg">
-        <motion.div
-          className="aurora-blob blob-1"
-          style={
-            !prefersReducedMotion
-              ? { x: normalizedX * 25, y: normalizedY * 20 }
-              : {}
-          }
-        />
-        <motion.div
-          className="aurora-blob blob-2"
-          style={
-            !prefersReducedMotion
-              ? { x: -normalizedX * 30, y: -normalizedY * 25 }
-              : {}
-          }
-        />
-        <motion.div
-          className="aurora-blob blob-3"
-          style={
-            !prefersReducedMotion
-              ? { x: normalizedX * 15, y: normalizedY * 35 }
-              : {}
-          }
-        />
-      </div>
-
-      {/* Film Grain Texture Overlay */}
-      <div className="noise-overlay" />
+      {/* Minimal Splash Screen */}
+      {showSplash && <SplashLoader />}
 
       {/* Top Navbar */}
       <Navbar
@@ -298,41 +262,32 @@ export const App = () => {
       />
 
       {/* Main Workspace */}
-      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 sm:py-8 flex flex-col gap-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 flex flex-col gap-5">
         
-        {/* Navigation Mode Pill Tabs with Animated Indicator */}
+        {/* Navigation Tabs (Underline Style: 2px accent underline on active, text color change) */}
         <nav 
-          className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-theme-surface/70 backdrop-blur-xl border border-theme-border/60 overflow-x-auto w-full max-w-full no-scrollbar shadow-sm"
+          className="flex items-center gap-1 border-b border-theme-border overflow-x-auto w-full max-w-full no-scrollbar pb-0"
           role="tablist"
         >
           {NAV_TABS.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
-              <motion.button
+              <button
                 key={tab.id}
                 role="tab"
                 aria-selected={isActive}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 whitespace-nowrap transition-colors ${
+                className={`relative px-3.5 py-2.5 text-xs sm:text-sm font-medium flex items-center gap-2 whitespace-nowrap transition-colors border-b-2 -mb-[1px] ${
                   isActive
-                    ? 'text-theme-primary'
-                    : 'text-theme-muted hover:text-theme-text hover:bg-theme-glass'
+                    ? 'text-theme-text border-theme-accent font-semibold'
+                    : 'text-theme-secondary hover:text-theme-text border-transparent'
                 }`}
               >
-                {tab.icon}
+                <span className={isActive ? 'text-theme-accent' : 'text-theme-secondary'}>
+                  {tab.icon}
+                </span>
                 <span>{tab.label}</span>
-
-                {/* Animated Layout Indicator */}
-                {isActive && (
-                  <motion.div
-                    layoutId="activeTabUnderline"
-                    className="absolute inset-0 rounded-xl bg-theme-primary/12 border border-theme-primary/30 shadow-glow-primary -z-10"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-                  />
-                )}
-              </motion.button>
+              </button>
             );
           })}
         </nav>
@@ -340,12 +295,12 @@ export const App = () => {
         {/* Tab View Container */}
         <div className="w-full">
           {activeTab === 'scientific' && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
               
-              {/* Left Column: Calculator Unit (HUD + Keypad + Steps) */}
-              <div className="lg:col-span-8 flex flex-col gap-4 glass-panel p-4 sm:p-6 shadow-glass-card">
+              {/* Left Column: Calculator Unit (Display + Keypad + Steps) */}
+              <div className="lg:col-span-8 flex flex-col gap-3.5 card-surface p-4 sm:p-5">
                 
-                {/* Futuristic HUD Display */}
+                {/* Numeric Display */}
                 <HUDDisplay
                   expression={expression}
                   result={result}
@@ -387,36 +342,36 @@ export const App = () => {
               <div className="hidden lg:flex lg:col-span-4 flex-col gap-4">
                 
                 {/* History Card Preview */}
-                <div className="glass-panel p-5 text-left flex flex-col gap-3">
-                  <div className="flex items-center justify-between border-b border-theme-border/60 pb-2.5">
-                    <span className="font-display font-bold text-sm text-theme-text flex items-center gap-2">
-                      <HistoryIcon size={16} className="text-theme-primary" />
+                <div className="card-surface p-4 text-left flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between border-b border-theme-border pb-2">
+                    <span className="font-sans font-semibold text-xs text-theme-text flex items-center gap-1.5">
+                      <HistoryIcon size={14} className="text-theme-secondary" />
                       Recent Calculations
                     </span>
                     <button
                       onClick={() => setIsHistoryOpen(true)}
-                      className="text-[11px] font-mono text-theme-primary hover:underline"
+                      className="text-[11px] font-mono text-theme-accent hover:underline"
                     >
                       View All
                     </button>
                   </div>
 
                   {history.length === 0 ? (
-                    <div className="py-8 text-center text-xs text-theme-muted font-mono">
+                    <div className="py-6 text-center text-xs text-theme-muted font-mono">
                       No calculations recorded
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-2 max-h-72 overflow-y-auto">
+                    <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto">
                       {history.slice(0, 5).map((item, idx) => (
                         <div
                           key={idx}
                           onClick={() => handleSelectHistory(item)}
-                          className="p-2.5 rounded-lg bg-theme-glass hover:bg-theme-glass-hover border border-theme-border/40 cursor-pointer transition-all"
+                          className="p-2 rounded-md bg-theme-elevated hover:bg-theme-elevated-hover border border-theme-border cursor-pointer transition-colors"
                         >
-                          <div className="text-[11px] font-mono text-theme-muted truncate">
+                          <div className="text-[11px] font-mono text-theme-secondary truncate">
                             {item.expression}
                           </div>
-                          <div className="text-right font-display font-bold text-theme-primary text-sm">
+                          <div className="text-right font-mono font-medium text-theme-text text-xs">
                             {item.numeric || item.latex}
                           </div>
                         </div>
@@ -425,15 +380,15 @@ export const App = () => {
                   )}
                 </div>
 
-                {/* Quick Shortcuts & Formula Tips */}
-                <div className="glass-panel p-5 text-left flex flex-col gap-2.5 text-xs text-theme-muted leading-relaxed">
-                  <span className="font-display font-bold text-sm text-theme-text">
-                    ⚡ Engineering Power Tips
+                {/* Quick Tips Card */}
+                <div className="card-surface p-4 text-left flex flex-col gap-2 text-xs text-theme-secondary leading-relaxed">
+                  <span className="font-sans font-semibold text-xs text-theme-text">
+                    Keyboard Shortcuts & Tips
                   </span>
-                  <p>• Press <strong className="text-amber-400">SHIFT</strong> to activate inverse trig, roots, and antilogs.</p>
-                  <p>• Use <strong className="text-theme-primary">Ans</strong> to cascade your previous answer into new formulas.</p>
-                  <p>• Keyboard keys: <code className="text-theme-text">Enter</code> evaluates, <code className="text-theme-text">Esc</code> clears.</p>
-                  <p>• Multi-variable equations are seamlessly supported across the Calculus and Algebra tabs.</p>
+                  <p>• Press <span className="font-medium text-theme-text">SHIFT</span> for inverse functions, roots, and antilogs.</p>
+                  <p>• Use <span className="font-medium text-theme-text">Ans</span> to recall the last evaluated result into expressions.</p>
+                  <p>• Keyboard keys: <code className="font-mono text-theme-text">Enter</code> evaluates, <code className="font-mono text-theme-text">Esc</code> clears.</p>
+                  <p>• Multi-variable equations are supported in Calculus and Algebra tabs.</p>
                 </div>
 
               </div>
@@ -452,7 +407,7 @@ export const App = () => {
 
       </main>
 
-      {/* History Slide-Over Glass Drawer */}
+      {/* History Slide-Over Drawer */}
       <HistoryDrawer
         isOpen={isHistoryOpen}
         onClose={() => setIsHistoryOpen(false)}

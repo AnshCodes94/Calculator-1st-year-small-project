@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { postApi } from '../../utils/api';
-import { StepByStepAccordion } from '../StepByStepAccordion';
 import { ConverterIcon, WarningIcon } from '../icons';
 
 export const ExtrasTab = () => {
@@ -108,31 +106,31 @@ export const ExtrasTab = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-5 text-left">
+    <div className="w-full flex flex-col gap-4 text-left">
       {/* 2x2 Grid for Extras */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* 1. Radix Base Converter */}
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
-          <span className="font-display font-bold text-theme-primary text-base">
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+          <span className="font-sans font-semibold text-theme-text text-sm">
             Radix Base Conversion
           </span>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-theme-muted">Number string</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">Value</label>
             <input
               type="text"
               value={baseVal}
               onChange={(e) => setBaseVal(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-sm text-theme-text focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">From Base</label>
+              <label className="text-xs font-mono text-theme-secondary">From</label>
               <select
                 value={baseFrom}
                 onChange={(e) => setBaseFrom(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
               >
                 <option value="dec">Decimal (10)</option>
                 <option value="bin">Binary (2)</option>
@@ -141,11 +139,11 @@ export const ExtrasTab = () => {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">To Base</label>
+              <label className="text-xs font-mono text-theme-secondary">To</label>
               <select
                 value={baseTo}
                 onChange={(e) => setBaseTo(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
               >
                 <option value="hex">Hexadecimal (16)</option>
                 <option value="bin">Binary (2)</option>
@@ -156,27 +154,27 @@ export const ExtrasTab = () => {
           </div>
           <button
             onClick={handleBaseConvert}
-            className="w-full py-2.5 rounded-xl bg-theme-primary/15 border border-theme-primary/40 text-theme-primary font-bold text-xs"
+            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
           >
-            Convert Radix
+            Convert
           </button>
 
           {baseResult && (
-            <div className="p-3.5 rounded-xl bg-theme-surface/90 border border-theme-border flex items-center justify-between">
-              <span className="text-xs font-mono text-theme-muted">Result ({baseTo.toUpperCase()}):</span>
-              <span className="font-mono font-bold text-lg text-theme-primary">{baseResult.converted}</span>
+            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between">
+              <span className="text-xs font-mono text-theme-secondary">Result ({baseTo.toUpperCase()}):</span>
+              <span className="font-mono font-medium text-sm text-theme-text">{baseResult.converted}</span>
             </div>
           )}
         </div>
 
         {/* 2. Unit Converter */}
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
-          <span className="font-display font-bold text-theme-secondary text-base">
-            Physical Unit Converter
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+          <span className="font-sans font-semibold text-theme-text text-sm">
+            Unit Converter
           </span>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">Category</label>
+              <label className="text-xs font-mono text-theme-secondary">Category</label>
               <select
                 value={unitCat}
                 onChange={(e) => {
@@ -185,7 +183,7 @@ export const ExtrasTab = () => {
                   setUnitFrom(unitMap[cat][0]);
                   setUnitTo(unitMap[cat][1] || unitMap[cat][0]);
                 }}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
               >
                 {Object.keys(unitMap).map(k => (
                   <option key={k} value={k}>{k.toUpperCase()}</option>
@@ -193,22 +191,22 @@ export const ExtrasTab = () => {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">Value</label>
+              <label className="text-xs font-mono text-theme-secondary">Value</label>
               <input
                 type="number"
                 value={unitVal}
                 onChange={(e) => setUnitVal(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-sm text-theme-text focus:outline-none"
+                className="w-full px-3 py-1.5 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">From</label>
+              <label className="text-xs font-mono text-theme-secondary">From</label>
               <select
                 value={unitFrom}
                 onChange={(e) => setUnitFrom(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
               >
                 {(unitMap[unitCat] || []).map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -216,11 +214,11 @@ export const ExtrasTab = () => {
               </select>
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">To</label>
+              <label className="text-xs font-mono text-theme-secondary">To</label>
               <select
                 value={unitTo}
                 onChange={(e) => setUnitTo(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
               >
                 {(unitMap[unitCat] || []).map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -230,98 +228,98 @@ export const ExtrasTab = () => {
           </div>
           <button
             onClick={handleUnitConvert}
-            className="w-full py-2.5 rounded-xl bg-theme-secondary/15 border border-theme-secondary/40 text-theme-secondary font-bold text-xs"
+            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
           >
-            Convert Unit
+            Convert
           </button>
 
           {unitResult && (
-            <div className="p-3.5 rounded-xl bg-theme-surface/90 border border-theme-border flex items-center justify-between">
-              <span className="text-xs font-mono text-theme-muted">Result:</span>
-              <span className="font-mono font-bold text-base text-theme-secondary">{unitResult.formatted}</span>
+            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between">
+              <span className="text-xs font-mono text-theme-secondary">Result:</span>
+              <span className="font-mono font-medium text-sm text-theme-text">{unitResult.formatted}</span>
             </div>
           )}
         </div>
 
         {/* 3. Combinatorics (nCr / nPr) */}
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
-          <span className="font-display font-bold text-theme-tertiary text-base">
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+          <span className="font-sans font-semibold text-theme-text text-sm">
             Combinatorics (nCr / nPr)
           </span>
           <div className="grid grid-cols-3 gap-2">
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">n (Total)</label>
+              <label className="text-xs font-mono text-theme-secondary">n (Total)</label>
               <input
                 type="number"
                 min="0"
                 value={combN}
                 onChange={(e) => setCombN(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-sm text-theme-text focus:outline-none"
+                className="w-full px-3 py-1.5 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">r (Sample)</label>
+              <label className="text-xs font-mono text-theme-secondary">r (Sample)</label>
               <input
                 type="number"
                 min="0"
                 value={combR}
                 onChange={(e) => setCombR(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-sm text-theme-text focus:outline-none"
+                className="w-full px-3 py-1.5 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-mono text-theme-muted">Type</label>
+              <label className="text-xs font-mono text-theme-secondary">Type</label>
               <select
                 value={combOp}
                 onChange={(e) => setCombOp(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:outline-none"
+                className="w-full px-2.5 py-1.5 rounded-md bg-theme-surface border border-theme-border text-xs font-mono text-theme-text focus:border-theme-accent focus:outline-none"
               >
-                <option value="nCr">nCr (Comb)</option>
-                <option value="nPr">nPr (Perm)</option>
+                <option value="nCr">nCr</option>
+                <option value="nPr">nPr</option>
               </select>
             </div>
           </div>
           <button
             onClick={handleCombCalc}
-            className="w-full py-2.5 rounded-xl bg-theme-tertiary/15 border border-theme-tertiary/40 text-theme-tertiary font-bold text-xs"
+            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
           >
-            Compute Combinations
+            Compute
           </button>
 
           {combResult && (
-            <div className="p-3.5 rounded-xl bg-theme-surface/90 border border-theme-border flex items-center justify-between">
-              <span className="text-xs font-mono text-theme-muted">Output:</span>
-              <span className="font-mono font-bold text-lg text-theme-tertiary">{combResult.result?.value}</span>
+            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between">
+              <span className="text-xs font-mono text-theme-secondary">Output:</span>
+              <span className="font-mono font-medium text-sm text-theme-text">{combResult.result?.value}</span>
             </div>
           )}
         </div>
 
         {/* 4. GCD & LCM */}
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
-          <span className="font-display font-bold text-amber-400 text-base">
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+          <span className="font-sans font-semibold text-theme-text text-sm">
             Number Theory (GCD & LCM)
           </span>
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-mono text-theme-muted">Comma-separated Integers</label>
+          <div className="flex flex-col gap-1">
+            <label className="text-xs font-mono text-theme-secondary">Integers (comma-separated)</label>
             <input
               type="text"
               value={gcdNums}
               onChange={(e) => setGcdNums(e.target.value)}
               placeholder="e.g. 24, 36, 60"
-              className="w-full px-3 py-2 rounded-xl bg-theme-surface border border-theme-border font-mono text-sm text-theme-text focus:outline-none"
+              className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border font-mono text-xs sm:text-sm text-theme-text focus:border-theme-accent focus:outline-none"
             />
           </div>
           <button
             onClick={handleGcdCalc}
-            className="w-full py-2.5 rounded-xl bg-amber-500/15 border border-amber-500/40 text-amber-400 font-bold text-xs"
+            className="w-full py-2 rounded-md bg-theme-elevated hover:bg-theme-hover border border-theme-border text-theme-text font-medium text-xs transition-colors"
           >
-            Find GCD & LCM
+            Calculate
           </button>
 
           {gcdResult && (
-            <div className="p-3.5 rounded-xl bg-theme-surface/90 border border-theme-border flex items-center justify-between text-xs font-mono">
-              <div>GCD: <span className="font-bold text-amber-400 text-base">{gcdResult.gcd}</span></div>
-              <div>LCM: <span className="font-bold text-theme-primary text-base">{gcdResult.lcm}</span></div>
+            <div className="p-2.5 rounded-md bg-theme-elevated border border-theme-border flex items-center justify-between text-xs font-mono">
+              <div>GCD: <span className="font-medium text-theme-text">{gcdResult.gcd}</span></div>
+              <div>LCM: <span className="font-medium text-theme-text">{gcdResult.lcm}</span></div>
             </div>
           )}
         </div>
@@ -329,11 +327,13 @@ export const ExtrasTab = () => {
       </div>
 
       {error && (
-        <div className="p-4 rounded-2xl bg-red-950/80 border border-red-500/60 text-left flex items-start gap-3">
-          <WarningIcon size={20} className="text-red-400 mt-0.5 shrink-0" />
+        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="text-white font-medium">{error.message}</span>
-            <p className="text-red-300 font-mono text-[11px] mt-1">💡 {error.hint}</p>
+            <span className="text-theme-text font-medium">{error.message}</span>
+            {error.hint && (
+              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+            )}
           </div>
         </div>
       )}

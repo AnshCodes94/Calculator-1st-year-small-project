@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { postApi } from '../../utils/api';
 import { StepByStepAccordion } from '../StepByStepAccordion';
 import { WarningIcon, ScientificIcon } from '../icons';
@@ -25,93 +24,93 @@ export const ComplexTab = () => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-5 text-left">
-      <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-mono text-theme-muted">Complex Expression (use 'i' for imaginary unit)</label>
+    <div className="w-full flex flex-col gap-4 text-left">
+      <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+        <div className="flex flex-col gap-1">
+          <label className="text-xs font-mono text-theme-secondary">Complex Expression (use 'i' for imaginary unit)</label>
           <input
             type="text"
             value={expr}
             onChange={(e) => setExpr(e.target.value)}
             placeholder="e.g. (3 + 4*i) / (1 - 2*i) or (1 + i)^6"
-            className="w-full px-3.5 py-2.5 rounded-xl bg-theme-surface border border-theme-border text-theme-text font-mono text-sm focus:border-theme-primary focus:outline-none"
+            className="w-full px-3 py-2 rounded-md bg-theme-surface border border-theme-border text-theme-text font-mono text-xs sm:text-sm focus:border-theme-accent focus:outline-none"
           />
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           disabled={loading}
           onClick={handleAnalyze}
-          className="w-full py-3 rounded-xl bg-theme-equals text-white font-bold text-sm shadow-glow-primary flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+          className="w-full py-2.5 rounded-md bg-theme-accent hover:bg-theme-accent-hover text-white font-medium text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50"
         >
           {loading ? (
-            <span>Analyzing Complex Domain...</span>
+            <span>Analyzing...</span>
           ) : (
             <>
-              <ScientificIcon size={18} />
-              <span>Analyze Complex Quantities</span>
+              <ScientificIcon size={16} />
+              <span>Analyze Complex Number</span>
             </>
           )}
-        </motion.button>
+        </button>
       </div>
 
       {error && (
-        <div className="p-4 rounded-2xl bg-red-950/80 border border-red-500/60 text-left flex items-start gap-3">
-          <WarningIcon size={20} className="text-red-400 mt-0.5 shrink-0" />
+        <div className="p-3 rounded-md bg-theme-error-subtle border border-theme-error/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-theme-error mt-0.5 shrink-0" />
           <div className="text-xs">
-            <span className="font-mono font-bold text-red-300 mr-2">[{error.code || 'COMPLEX_ERROR'}]</span>
-            <span className="text-white font-medium">{error.message}</span>
-            <p className="text-red-300 font-mono text-[11px] mt-1">💡 {error.hint}</p>
+            <span className="font-mono text-theme-error mr-1.5 font-medium">[{error.code || 'COMPLEX_ERROR'}]</span>
+            <span className="text-theme-text font-medium">{error.message}</span>
+            {error.hint && (
+              <p className="text-theme-secondary font-mono text-[11px] mt-1">Hint: {error.hint}</p>
+            )}
           </div>
         </div>
       )}
 
       {resultData && resultData.result && (
-        <div className="glass-panel p-5 sm:p-6 flex flex-col gap-4">
-          <div className="text-xs font-mono font-bold text-theme-primary uppercase tracking-wider">
-            Complex Properties Breakdown
+        <div className="card-surface p-4 sm:p-5 flex flex-col gap-3">
+          <div className="text-xs font-mono text-theme-secondary uppercase">
+            Properties Breakdown
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <div className="p-3.5 rounded-xl bg-theme-surface/80 border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-muted uppercase">Real Part Re(z)</span>
-              <div className="font-display font-bold text-lg text-theme-text mt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
+              <span className="text-[10px] font-mono text-theme-secondary uppercase">Real Part Re(z)</span>
+              <div className="font-mono font-medium text-base text-theme-text mt-0.5">
                 {resultData.result.real?.numeric || resultData.result.real?.exact}
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-theme-surface/80 border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-muted uppercase">Imaginary Part Im(z)</span>
-              <div className="font-display font-bold text-lg text-theme-text mt-1">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
+              <span className="text-[10px] font-mono text-theme-secondary uppercase">Imaginary Part Im(z)</span>
+              <div className="font-mono font-medium text-base text-theme-text mt-0.5">
                 {resultData.result.imag?.numeric || resultData.result.imag?.exact} i
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-theme-surface/80 border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-muted uppercase">Modulus |z|</span>
-              <div className="font-display font-bold text-lg text-theme-primary mt-1">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
+              <span className="text-[10px] font-mono text-theme-secondary uppercase">Modulus |z|</span>
+              <div className="font-mono font-medium text-base text-theme-text mt-0.5">
                 {resultData.result.modulus?.numeric || resultData.result.modulus?.exact}
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-theme-surface/80 border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-muted uppercase">Argument Arg(z)</span>
-              <div className="font-display font-bold text-base text-theme-secondary mt-1">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
+              <span className="text-[10px] font-mono text-theme-secondary uppercase">Argument Arg(z)</span>
+              <div className="font-mono text-sm text-theme-text mt-0.5">
                 {resultData.result.argument_rad?.numeric || resultData.result.argument_rad?.exact} rad ({resultData.result.argument_deg?.numeric || resultData.result.argument_deg?.exact}°)
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-theme-surface/80 border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-muted uppercase">Conjugate z*</span>
-              <div className="font-display font-bold text-base text-theme-tertiary mt-1">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
+              <span className="text-[10px] font-mono text-theme-secondary uppercase">Conjugate z*</span>
+              <div className="font-mono text-sm text-theme-text mt-0.5">
                 {resultData.result.conjugate?.exact}
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-theme-surface/80 border border-theme-border">
-              <span className="text-[10px] font-mono text-theme-muted uppercase">Euler Polar Form</span>
-              <div className="font-display font-bold text-sm text-theme-text mt-1">
+            <div className="p-3 rounded-md bg-theme-elevated border border-theme-border">
+              <span className="text-[10px] font-mono text-theme-secondary uppercase">Polar Form</span>
+              <div className="font-mono text-sm text-theme-text mt-0.5">
                 r e^(iθ)
               </div>
             </div>

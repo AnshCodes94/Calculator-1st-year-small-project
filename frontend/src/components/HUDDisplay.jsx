@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import katex from 'katex';
 import { CopyIcon, SuccessCheckIcon, WarningIcon } from './icons';
 
@@ -21,13 +20,13 @@ export const HUDDisplay = ({
   const katexExprRef = useRef(null);
   const katexResultRef = useRef(null);
 
-  // Auto-shrink font size for long expressions and results
+  // Auto-scale font size for large result strings
   const getResultFontSize = (str) => {
-    if (!str) return 'text-3xl sm:text-4xl';
+    if (!str) return 'text-2xl sm:text-3xl';
     const len = str.length;
-    if (len > 30) return 'text-xl sm:text-2xl';
-    if (len > 18) return 'text-2xl sm:text-3xl';
-    return 'text-3xl sm:text-4xl';
+    if (len > 30) return 'text-lg sm:text-xl';
+    if (len > 18) return 'text-xl sm:text-2xl';
+    return 'text-2xl sm:text-3xl';
   };
 
   // Render KaTeX for live formula preview
@@ -35,11 +34,10 @@ export const HUDDisplay = ({
     if (!katexExprRef.current) return;
 
     if (!expression || !expression.trim()) {
-      katexExprRef.current.innerHTML = '<span class="text-theme-subtle/50 font-mono text-sm">0</span>';
+      katexExprRef.current.innerHTML = '<span class="text-theme-muted/50 font-mono text-sm">0</span>';
       return;
     }
 
-    // Convert symbols for prettier KaTeX live preview
     let previewLatex = expression
       .replace(/\*/g, ' \\times ')
       .replace(/\//g, ' \\div ')
@@ -58,19 +56,19 @@ export const HUDDisplay = ({
     }
   }, [expression]);
 
-  // Render KaTeX for main result
+  // Render KaTeX for result
   useEffect(() => {
     if (!katexResultRef.current) return;
 
     if (!result) {
-      katexResultRef.current.innerHTML = '<span class="text-theme-muted font-mono">0</span>';
+      katexResultRef.current.innerHTML = '<span class="text-theme-secondary font-mono">0</span>';
       return;
     }
 
     try {
       katex.render(result, katexResultRef.current, {
         throwOnError: false,
-        displayMode: true
+        displayMode: false
       });
     } catch (e) {
       katexResultRef.current.textContent = result;
@@ -88,132 +86,116 @@ export const HUDDisplay = ({
 
   return (
     <div 
-      className={`relative w-full rounded-2xl hud-screen p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between min-h-[175px] sm:min-h-[195px] ${
-        error ? 'border-red-500 shadow-[0_0_30px_rgba(244,63,94,0.35)] animate-[shake_0.45s_ease-in-out]' : ''
+      className={`display-screen p-4 sm:p-5 flex flex-col justify-between min-h-[165px] sm:min-h-[175px] text-right transition-colors ${
+        error ? 'border-theme-rose error-nudge' : ''
       }`}
     >
-      {/* Scanning Light Beam (Futuristic HUD feel) */}
-      <div className="hud-scan-beam" />
-
-      {/* Top HUD Telemetry Status Bar */}
-      <div className="flex items-center justify-between text-[11px] font-mono text-theme-muted pb-2 border-b border-white/5 relative z-10">
-        <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1 font-bold text-theme-primary">
-            <span className="w-1.5 h-1.5 rounded-full bg-theme-primary animate-pulse" />
-            HUD.v2
-          </span>
-          <span className="opacity-40">•</span>
-          <span className={`px-1.5 py-0.5 rounded text-[10px] ${angleMode === 'rad' ? 'bg-theme-primary/20 text-theme-primary' : 'bg-theme-secondary/20 text-theme-secondary'}`}>
+      {/* Top Telemetry & Status Badges */}
+      <div className="flex items-center justify-between pb-2 border-b border-white/[0.06] text-xs">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Angle Mode Badge */}
+          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-500/15 border border-cyan-500/30 text-cyan-400">
             {angleMode.toUpperCase()}
           </span>
+
+          {/* Active Status Badges */}
           {isShiftActive && (
-            <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-500/25 text-amber-300 font-bold">
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 border border-amber-500/40 text-amber-300">
               SHIFT
             </span>
           )}
+
           {isHypActive && (
-            <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-500/25 text-purple-300 font-bold">
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-500/20 border border-purple-500/40 text-purple-300">
               HYP
             </span>
           )}
+
           {hasMemory && (
-            <span className="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/25 text-emerald-300 font-bold">
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 border border-emerald-500/40 text-emerald-300">
               MEM
             </span>
           )}
         </div>
 
         {/* Copy Result Button */}
-        <motion.button
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
+        <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 text-theme-muted hover:text-theme-text transition-colors text-[10px]"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] hover:bg-white/[0.08] text-theme-secondary hover:text-theme-text transition-colors text-xs font-sans"
           title="Copy result to clipboard"
           aria-label="Copy mathematical result"
         >
           {copied ? (
             <>
-              <SuccessCheckIcon size={12} className="text-emerald-400" />
-              <span className="text-emerald-400 font-semibold">Copied</span>
+              <SuccessCheckIcon size={13} className="text-emerald-400" />
+              <span className="text-emerald-400 font-medium">Copied</span>
             </>
           ) : (
             <>
-              <CopyIcon size={12} />
+              <CopyIcon size={13} />
               <span>Copy</span>
             </>
           )}
-        </motion.button>
+        </button>
       </div>
 
-      {/* Center Formula Input & Live KaTeX Preview */}
-      <div className="my-2 text-right relative z-10">
-        <div 
-          ref={katexExprRef}
-          className="overflow-x-auto overflow-y-hidden text-theme-muted/80 text-base sm:text-lg min-h-[28px] font-mono tracking-wide py-0.5"
-        />
+      {/* Formula Input & Live KaTeX Expression */}
+      <div className="my-2.5 overflow-x-auto overflow-y-hidden text-theme-secondary text-sm sm:text-base font-mono">
+        <div ref={katexExprRef} className="inline-block" />
+        <span className="standard-caret" />
       </div>
 
-      {/* Bottom Main Result Output */}
-      <div className="mt-auto text-right relative z-10 flex flex-col items-end">
+      {/* Main Result Output */}
+      <div className="mt-auto flex flex-col items-end">
         {isLoading ? (
-          <div className="flex items-center gap-2 py-2 text-theme-primary">
-            <span className="inline-block w-4 h-4 border-2 border-theme-primary border-t-transparent rounded-full animate-spin" />
-            <span className="font-mono text-sm tracking-widest uppercase">Calculating...</span>
+          <div className="flex items-center gap-2 py-1 text-theme-cyan">
+            <span className="w-3.5 h-3.5 border-2 border-theme-cyan border-t-transparent rounded-full animate-spin" />
+            <span className="font-mono text-xs tracking-wider">Evaluating...</span>
           </div>
         ) : (
           <>
-            {/* KaTeX Rendered Mathematical Exact Result */}
+            {/* Exact Rendered Result */}
             <div 
               ref={katexResultRef}
-              className={`font-display font-bold text-theme-text overflow-x-auto max-w-full drop-shadow-[0_0_15px_var(--glow-primary)] ${getResultFontSize(result)}`}
+              className={`font-mono font-semibold text-theme-text overflow-x-auto max-w-full ${getResultFontSize(result)}`}
             />
 
-            {/* Decimal Numerical Approximation */}
+            {/* Numerical Approximation (with soft cyan tint) */}
             {numericResult && isApprox && (
-              <motion.div 
-                initial={{ opacity: 0, y: 3 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="font-mono text-xs sm:text-sm text-theme-primary/90 mt-1 tracking-wider"
-              >
+              <div className="font-mono text-xs sm:text-sm text-sky-400/90 mt-1">
                 ≈ {numericResult}
-              </motion.div>
+              </div>
             )}
           </>
         )}
       </div>
 
-      {/* Error Banner Overlay with Shake & Fix Hint */}
-      <AnimatePresence>
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.98 }}
-            className="mt-3 p-3 rounded-xl bg-red-950/80 border border-red-500/60 shadow-lg text-left relative z-20 flex items-start gap-3"
-          >
-            <WarningIcon size={20} className="text-red-400 mt-0.5 shrink-0" />
-            <div className="flex-1 text-xs">
-              <div className="flex items-center gap-2">
-                <span className="font-mono font-bold text-[10px] px-1.5 py-0.2 rounded bg-red-500/30 text-red-200">
-                  {error.code || 'CALC_ERROR'}
-                </span>
-                <span className="text-white font-medium">{error.message}</span>
-              </div>
-              <div className="text-red-300/90 text-[11px] mt-1 font-mono">
-                💡 {error.hint || 'Please check expression format.'}
-              </div>
+      {/* Error Message */}
+      {error && (
+        <div className="mt-3 p-3 rounded-md bg-rose-500/10 border border-rose-500/30 text-left flex items-start gap-2.5">
+          <WarningIcon size={16} className="text-rose-400 mt-0.5 shrink-0" />
+          <div className="text-xs">
+            <div className="flex items-center gap-2">
+              <span className="font-mono font-bold text-[10px] px-1 rounded bg-rose-500/20 text-rose-300">
+                {error.code || 'ERROR'}
+              </span>
+              <span className="text-rose-200 font-medium">{error.message}</span>
             </div>
-            <button 
-              onClick={onClearError}
-              className="text-red-400 hover:text-white text-xs font-mono px-2 py-0.5 rounded hover:bg-white/10"
-              aria-label="Dismiss error"
-            >
-              ✕
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {error.hint && (
+              <div className="text-rose-300/80 text-[11px] mt-1 font-mono">
+                💡 {error.hint}
+              </div>
+            )}
+          </div>
+          <button 
+            onClick={onClearError}
+            className="text-rose-400 hover:text-white text-xs p-1"
+            aria-label="Dismiss error"
+          >
+            ✕
+          </button>
+        </div>
+      )}
     </div>
   );
 };
