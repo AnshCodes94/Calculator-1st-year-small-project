@@ -1,0 +1,191 @@
+/* ==========================================================================
+   CALCVERSE DESIGN SYSTEM & 5 PREMIUM THEME TOKENS
+   ========================================================================== */
+
+:root {
+  /* Common Geometry & Transition Tokens */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 280ms;
+  --duration-slow: 600ms;
+
+  /* Default Theme: 1. Aurora */
+  --bg-base: #070a12;
+  --bg-surface: #0e1526;
+  --bg-card: rgba(14, 21, 38, 0.72);
+  --bg-glass: rgba(255, 255, 255, 0.035);
+  --bg-glass-hover: rgba(255, 255, 255, 0.08);
+
+  --accent-primary: #00f2fe;     /* Electric Cyan */
+  --accent-secondary: #8b5cf6;   /* Royal Violet */
+  --accent-tertiary: #f43f5e;    /* Vivid Pink/Rose */
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(0, 242, 254, 0.45);
+  --border-gradient: linear-gradient(135deg, rgba(0, 242, 254, 0.4), rgba(139, 92, 246, 0.4), rgba(244, 63, 94, 0.4));
+
+  --glow-primary: rgba(0, 242, 254, 0.35);
+  --glow-secondary: rgba(139, 92, 246, 0.3);
+  --glow-hud: rgba(0, 242, 254, 0.25);
+
+  --btn-num-bg: rgba(26, 36, 60, 0.6);
+  --btn-num-hover: rgba(40, 56, 92, 0.8);
+  --btn-op-bg: rgba(0, 242, 254, 0.12);
+  --btn-op-hover: rgba(0, 242, 254, 0.24);
+  --btn-fn-bg: rgba(139, 92, 246, 0.14);
+  --btn-fn-hover: rgba(139, 92, 246, 0.26);
+  --btn-equals-bg: linear-gradient(135deg, #00f2fe, #8b5cf6);
+
+  --hud-scanline-color: rgba(0, 242, 254, 0.04);
+}
+
+/* 2. Cyberpunk Theme */
+[data-theme="cyberpunk"] {
+  --bg-base: #040406;
+  --bg-surface: #0a0a0f;
+  --bg-card: rgba(12, 12, 18, 0.85);
+  --bg-glass: rgba(255, 0, 127, 0.04);
+  --bg-glass-hover: rgba(255, 0, 127, 0.12);
+
+  --accent-primary: #ff007f;    /* Neon Pink */
+  --accent-secondary: #00f0ff;  /* Electric Blue */
+  --accent-tertiary: #ffe600;   /* Acid Yellow */
+
+  --text-main: #ffffff;
+  --text-muted: #a3a3b2;
+  --text-subtle: #717182;
+
+  --border-glass: rgba(255, 0, 127, 0.2);
+  --border-glow: rgba(255, 0, 127, 0.6);
+  --border-gradient: linear-gradient(135deg, #ff007f, #ffe600, #00f0ff);
+
+  --glow-primary: rgba(255, 0, 127, 0.45);
+  --glow-secondary: rgba(0, 240, 255, 0.4);
+  --glow-hud: rgba(255, 0, 127, 0.3);
+
+  --btn-num-bg: rgba(20, 20, 30, 0.7);
+  --btn-num-hover: rgba(35, 35, 50, 0.9);
+  --btn-op-bg: rgba(0, 240, 255, 0.14);
+  --btn-op-hover: rgba(0, 240, 255, 0.28);
+  --btn-fn-bg: rgba(255, 230, 0, 0.12);
+  --btn-fn-hover: rgba(255, 230, 0, 0.24);
+  --btn-equals-bg: linear-gradient(135deg, #ff007f, #ffe600);
+
+  --hud-scanline-color: rgba(255, 0, 127, 0.05);
+}
+
+/* 3. Emerald Matrix Theme */
+[data-theme="emerald-matrix"] {
+  --bg-base: #020704;
+  --bg-surface: #051409;
+  --bg-card: rgba(5, 20, 9, 0.82);
+  --bg-glass: rgba(0, 255, 102, 0.04);
+  --bg-glass-hover: rgba(0, 255, 102, 0.1);
+
+  --accent-primary: #00ff66;    /* Terminal Matrix Green */
+  --accent-secondary: #10b981;  /* Emerald */
+  --accent-tertiary: #a7f3d0;   /* Mint */
+
+  --text-main: #f0fdf4;
+  --text-muted: #86efac;
+  --text-subtle: #4ade80;
+
+  --border-glass: rgba(0, 255, 102, 0.18);
+  --border-glow: rgba(0, 255, 102, 0.55);
+  --border-gradient: linear-gradient(135deg, #00ff66, #10b981, #059669);
+
+  --glow-primary: rgba(0, 255, 102, 0.4);
+  --glow-secondary: rgba(16, 185, 129, 0.35);
+  --glow-hud: rgba(0, 255, 102, 0.3);
+
+  --btn-num-bg: rgba(6, 28, 14, 0.65);
+  --btn-num-hover: rgba(10, 45, 22, 0.85);
+  --btn-op-bg: rgba(0, 255, 102, 0.14);
+  --btn-op-hover: rgba(0, 255, 102, 0.26);
+  --btn-fn-bg: rgba(16, 185, 129, 0.14);
+  --btn-fn-hover: rgba(16, 185, 129, 0.26);
+  --btn-equals-bg: linear-gradient(135deg, #00ff66, #059669);
+
+  --hud-scanline-color: rgba(0, 255, 102, 0.05);
+}
+
+/* 4. Sunset Gold Theme */
+[data-theme="sunset-gold"] {
+  --bg-base: #11091a;
+  --bg-surface: #1e0e2e;
+  --bg-card: rgba(30, 14, 46, 0.78);
+  --bg-glass: rgba(245, 158, 11, 0.04);
+  --bg-glass-hover: rgba(245, 158, 11, 0.1);
+
+  --accent-primary: #f59e0b;    /* Solar Amber */
+  --accent-secondary: #f43f5e;  /* Crimson Sunset */
+  --accent-tertiary: #c084fc;   /* Violet Twilight */
+
+  --text-main: #fffbeb;
+  --text-muted: #fde68a;
+  --text-subtle: #f59e0b;
+
+  --border-glass: rgba(245, 158, 11, 0.2);
+  --border-glow: rgba(245, 158, 11, 0.55);
+  --border-gradient: linear-gradient(135deg, #f59e0b, #f43f5e, #c084fc);
+
+  --glow-primary: rgba(245, 158, 11, 0.4);
+  --glow-secondary: rgba(244, 63, 94, 0.35);
+  --glow-hud: rgba(245, 158, 11, 0.3);
+
+  --btn-num-bg: rgba(45, 20, 68, 0.65);
+  --btn-num-hover: rgba(65, 30, 98, 0.85);
+  --btn-op-bg: rgba(245, 158, 11, 0.15);
+  --btn-op-hover: rgba(245, 158, 11, 0.28);
+  --btn-fn-bg: rgba(244, 63, 94, 0.14);
+  --btn-fn-hover: rgba(244, 63, 94, 0.26);
+  --btn-equals-bg: linear-gradient(135deg, #f59e0b, #f43f5e);
+
+  --hud-scanline-color: rgba(245, 158, 11, 0.05);
+}
+
+/* 5. Clean Light Theme */
+[data-theme="clean-light"] {
+  --bg-base: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-glass: rgba(0, 0, 0, 0.025);
+  --bg-glass-hover: rgba(0, 0, 0, 0.05);
+
+  --accent-primary: #0284c7;    /* Crisp Ocean Blue */
+  --accent-secondary: #7c3aed;  /* Royal Iris */
+  --accent-tertiary: #e11d48;   /* Ruby */
+
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-subtle: #64748b;
+
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-glow: rgba(2, 132, 199, 0.45);
+  --border-gradient: linear-gradient(135deg, rgba(2, 132, 199, 0.35), rgba(124, 58, 237, 0.35));
+
+  --glow-primary: rgba(2, 132, 199, 0.2);
+  --glow-secondary: rgba(124, 58, 237, 0.2);
+  --glow-hud: rgba(2, 132, 199, 0.15);
+
+  --btn-num-bg: rgba(241, 245, 249, 0.9);
+  --btn-num-hover: rgba(226, 232, 240, 1);
+  --btn-op-bg: rgba(2, 132, 199, 0.1);
+  --btn-op-hover: rgba(2, 132, 199, 0.2);
+  --btn-fn-bg: rgba(124, 58, 237, 0.1);
+  --btn-fn-hover: rgba(124, 58, 237, 0.2);
+  --btn-equals-bg: linear-gradient(135deg, #0284c7, #7c3aed);
+
+  --hud-scanline-color: rgba(2, 132, 199, 0.02);
+}

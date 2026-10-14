@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#070a12" />
+    <meta name="description" content="CalcVerse - Next-generation Advanced Scientific Calculator & Symbolic Engineering Suite for all devices. Powered by SymPy, NumPy, KaTeX, and GPU graphing." />
+    
+    <!-- Mobile PWA Capabilities for Android & iOS -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="CalcVerse" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="HandheldFriendly" content="true" />
+
+    <!-- Open Graph & Twitter Cards -->
+    <meta property="og:title" content="CalcVerse - Quantum Grade Scientific Calculator" />
+    <meta property="og:description" content="Symbolic calculus, linear algebra, complex numbers, and interactive function plotter optimized for mobile, tablet, and desktop." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Favicon & PWA Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Google Fonts: Space Grotesk, Orbitron & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+
+    <!-- Plotly CDN for High Performance Vector Graphing -->
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+    <title>CalcVerse | Advanced Scientific & Symbolic Calculator</title>
+  </head>
+  <body class="bg-theme-base text-theme-text font-sans antialiased overflow-x-hidden selection:bg-theme-primary/30 selection:text-white min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

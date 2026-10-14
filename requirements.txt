@@ -1,0 +1,7 @@
+# Production pinned dependencies for Advanced Scientific Calculator
+Flask==3.0.3
+Werkzeug==3.0.3
+sympy==1.13.3
+numpy==2.0.2
+python-dotenv==1.0.1
+gunicorn==22.0.0
