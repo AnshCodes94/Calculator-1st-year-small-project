@@ -9,8 +9,8 @@ if __name__ == '__main__':
     host = os.environ.get('HOST', Config.HOST)
     debug = Config.DEBUG
     print("=" * 60)
-    print("  🚀 ADVANCED SCIENTIFIC CALCULATOR - Production Ready")
-    print(f"  📡 Running on: http://{host}:{port}")
-    print(f"  🛠️  Debug Mode: {debug}")
+    print("  [READY] ADVANCED SCIENTIFIC CALCULATOR - Production Ready")
+    print(f"  [SERVER] Running on: http://{host}:{port}")
+    print(f"  [CONFIG] Debug Mode: {debug}")
     print("=" * 60)
     app.run(host=host, port=port, debug=debug)
